@@ -26,7 +26,9 @@ export default class Navbar extends Component {
                         </ul>
                         {this.props.userObj ? (
                         <div>
-                            <Link to="/newevent/" className="btn btn-outline-success my-2 my-sm-0" >Add New Event</Link>  <Link to="/" onClick={this.props.logout}>Logout</Link>
+                            <Link to="/newevent/" className="btn btn-outline-success my-2 my-sm-0" >Add New Event</Link>  
+                            <Link to="/myevents/">My Events</Link>
+                            <Link to="/" onClick={this.props.logout}>Logout</Link>
                         </div>
                         ) : (
                                 <div>

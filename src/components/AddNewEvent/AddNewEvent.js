@@ -26,7 +26,6 @@ export default class AddNewEvent extends Component {
         Math.floor(Math.random() * 11 + 1) +
         ":" +
         Math.floor(Math.random() * 60 + 1),
-      user: "User " + Math.floor(Math.random() * 1000),
       message: ""
     };
   }
@@ -55,9 +54,7 @@ export default class AddNewEvent extends Component {
             .ID
         }
       });
-      //Math.floor(Math.random() * 20000) + " SW " + Math.floor(Math.random() * 200) + " St",
-      // console.log(this.props.listOfParks.length)
-    }, 4000);
+    }, 5000);
     if (this.props.listOfParks)
       return (
         <div>
@@ -70,13 +67,12 @@ export default class AddNewEvent extends Component {
                 e,
                 this.props.sports[Math.floor(Math.random() * 4)]
                 +" " +
-                  this.props.eventTitleOptions[Math.floor(Math.random() * 4)],
+                this.props.eventTitleOptions[Math.floor(Math.random() * 4)],
                 this.state.location,
                 this.props.descriptionLorem[Math.floor(Math.random() * 5)],
                 this.props.sports[Math.floor(Math.random() * 4)],
                 this.state.date,
-                this.state.time,
-                this.state.user
+                this.state.time
               );
             }}
           >

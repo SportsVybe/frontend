@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./components/Header/Header";
 import SignIn from "./components/SignIn/SignIn";
 import Loading from "./components/Loading/Loading.js";
+import MyEvents from "./components/MyEvents/MyEvents.js";
 import ListOfParks from "./components/ListOfParks/ListOfParks";
 import ListOfEvents from "./components/ListOfEvents/ListOfEvents";
 import SinglePark from "./components/SinglePark/SinglePark";
@@ -27,7 +28,8 @@ class App extends Component {
   state = {
     theParksFromMiamiDade: null,
     eventsFromDB: null,
-    ready: false,
+    myEventsFromDB: null,
+    apiIsAwake: false,
     message: "",
     errorMsg: null,
     successMsg: null,
@@ -53,8 +55,8 @@ class App extends Component {
 
   async componentDidMount() {
     this.getUser();
-    this.fetchData();
     this.getUserLocation();
+    this.fetchData();
   }
 
   fetchData = () => {
@@ -68,7 +70,7 @@ class App extends Component {
         this.setState({
           theParksFromMiamiDade: x,
           filteredParks: x,
-          ready: true
+          apiIsAwake: true
         });
       })
       .catch(err => {
@@ -86,7 +88,7 @@ class App extends Component {
         this.setState({
           eventsFromDB: x,
           filteredEvents: x,
-          ready: true
+          apiIsAwake: true
         });
       })
       .catch(err => {
@@ -125,7 +127,7 @@ class App extends Component {
     sport,
     date,
     time,
-    user
+    // user
   ) => {
     e.preventDefault();
 
@@ -136,7 +138,7 @@ class App extends Component {
       title: titleGen,
       description: description,
       location: location,
-      user: user,
+      // user: user,
       date: date,
       sport: sport,
       img: imgGen,
@@ -149,23 +151,23 @@ class App extends Component {
         , { withCredentials: true }
       )
       .then(res => {
-        let eventCopy = [...this.state.eventsFromDB];
-        // console.log(res)
-        eventCopy.push(res.data.ops[0]);
+        // let eventCopy = [...this.state.eventsFromDB];
+        // // console.log(res)
+        // eventCopy.push(res.data.ops[0]);
         // console.log(event)
-        console.log(res)
+        console.log(res.data._id)
         this.fetchData();
         this.setState(
           {
             message: "Posted Successfully",
-            eventsFromDB: eventCopy
+            // eventsFromDB: eventCopy
           },
           () =>
             setTimeout(() => {
               this.setState({
                 message: ""
               });
-              myHistory.push("/singleevent/" + res.data.ops[0]._id);
+              myHistory.push("/singleevent/" + res.data._id);
             }, 1000)
         );
       })
@@ -298,7 +300,7 @@ class App extends Component {
         // if there is a user logged in then fetch the user data and set the state
         if (res.data) {
           this.setUser(res.data);
-          this.fetchData();
+          this.getMyEvents();
           // this.setFeedbackMessage(
           //   `${res.data.username} successfully logged in`,
           //   true
@@ -322,6 +324,27 @@ class App extends Component {
         );
       });
   };
+
+
+  getMyEvents = () => {
+    //Events from DB
+    Axios
+      .get(`${baseURL}/api/myevents`, { withCredentials: true })
+      // `${baseURL}/api/event}`, { withCredentials: true }
+      // https://ironrest.herokuapp.com/avrahm
+      .then(res => {
+        let x = res.data;
+        console.log(x)
+        this.setState({
+          myEventsFromDB: x,
+          // filteredEvents: x,
+          apiIsAwake: true
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   /**
    * logout the user from the backend and delete all user data from state
@@ -363,7 +386,7 @@ class App extends Component {
   };
 
   render() {
-    if (this.state.ready) {
+    if (this.state.apiIsAwake) {
       return (
         <div className="App">
           <Navbar
@@ -387,7 +410,7 @@ class App extends Component {
               render={props => (
                 <SignUp
                   {...props}
-                  ready={this.state.ready}
+                  ready={this.state.apiIsAwake}
                   userObj={this.state.userLoggedIn}
                   setUser={this.setUser}
                   // fetchData={this.fetchData}
@@ -401,10 +424,10 @@ class App extends Component {
               render={props => (
                 <Login
                   {...props}
-                  ready={this.state.ready}
+                  ready={this.state.apiIsAwake}
                   userObj={this.state.userLoggedIn}
                   setUser={this.setUser}
-                  // fetchData={this.fetchData}
+                  getMyEvents={this.getMyEvents}
                   setFlashMessage={this.setFeedbackMessage}
                 />
               )}
@@ -419,7 +442,7 @@ class App extends Component {
                   eventData={this.state.filteredEvents}
                   filterFunction={this.filterFunction}
                   selectedOption={this.state.selectedOption}
-                  ready={this.state.ready}
+                  ready={this.state.apiIsAwake}
                   userLocation={this.state.userLocation}
                 />
               )}
@@ -433,7 +456,7 @@ class App extends Component {
                   {...props}
                   listOfParks={this.state.theParksFromMiamiDade}
                   listOfEvents={this.state.eventsFromDB}
-                  ready={this.state.ready}
+                  ready={this.state.apiIsAwake}
                   userLocation={this.state.userLocation}
                   distanceFunction={this.distanceFunction}
                   submitParkUpdateFunction={this.submitParkUpdateFunction}
@@ -448,7 +471,7 @@ class App extends Component {
                 <ListOfParks
                   {...props}
                   listOfParks={this.state.filteredParks}
-                  ready={this.state.ready}
+                  ready={this.state.apiIsAwake}
                   filterFunction={this.filterFunction}
                   selectedOption={this.state.selectedOption}
                   userLocation={this.state.userLocation}
@@ -463,7 +486,20 @@ class App extends Component {
                 <ListOfEvents
                   {...props}
                   listOfEvents={this.state.filteredEvents}
-                  ready={this.state.ready}
+                  ready={this.state.apiIsAwake}
+                  filterFunction={this.filterFunction}
+                  selectedOption={this.state.selectedOption}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/myevents/"
+              render={props => (
+                <MyEvents
+                  {...props}
+                  myEventsFromDB={this.state.myEventsFromDB}
+                  ready={this.state.apiIsAwake}
                   filterFunction={this.filterFunction}
                   selectedOption={this.state.selectedOption}
                 />
@@ -476,7 +512,7 @@ class App extends Component {
                 <SingleEvent
                   {...props}
                   listOfEvents={this.state.eventsFromDB}
-                  ready={this.state.ready}
+                  ready={this.state.apiIsAwake}
                   message={this.state.message}
                 />
               )}

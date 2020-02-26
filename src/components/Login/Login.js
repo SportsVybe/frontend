@@ -30,8 +30,8 @@ export default class SignUp extends Component {
                         password: ""
                     });
                     this.props.setUser(response.data);
-                    this.props.history.push("/map/");
-                    //   this.props.fetchData();
+                    this.props.getMyEvents();
+                    this.props.history.push("/myevents/");
                     this.props.setFlashMessage("Login successful", true);
                 })
                 .catch(err => {
