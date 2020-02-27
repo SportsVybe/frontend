@@ -282,9 +282,7 @@ class App extends Component {
     }
   };
 
-  /**
-   * save the user data to the state
-   */
+  /** save the user data to the state */
   setUser = userObj => {
     this.setState({
       userLoggedIn: userObj
