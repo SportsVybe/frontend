@@ -157,6 +157,7 @@ class App extends Component {
         // console.log(event)
         console.log(res.data._id)
         this.fetchData();
+        this.getMyEvents();ƒ
         this.setState(
           {
             message: "Posted Successfully",
@@ -289,9 +290,7 @@ class App extends Component {
     });
   };
 
-  /**
-  * make call to server to get the user data and save to set state
-  */
+  /** make call to server to get the user data and save to set state */
   getUser = () => {
     Axios.get(`${baseURL}/api/isLoggedIn`, { withCredentials: true })
       .then(res => {
@@ -303,12 +302,12 @@ class App extends Component {
           //   `${res.data.username} successfully logged in`,
           //   true
           // );
-          // this.setFeedbackMessage(`${res.data.username} successfully logged in`, true);
+          this.setFeedbackMessage(`${res.data.username} successfully logged in`, true);
           setTimeout(() => {
             this.setState({ apiIsAwake: true });
           }, 2000);
         } else {
-          // this.setFeedbackMessage(`No user is currently logged in`, false);
+          this.setFeedbackMessage(`No user is currently logged in`, false);
           setTimeout(() => {
             this.setState({ apiIsAwake: true });
           }, 2000);

@@ -13,13 +13,13 @@ export default class MyEvents extends Component {
   };
 
   render() {
-    if (this.props.myEventsFromDB)
+    if (this.props.ready)
       return (
         <div>
-          <FilterMenu
+          {/* <FilterMenu
             selectedOption={this.props.selectedOption}
             filterFunction={this.props.filterFunction}
-          />
+          /> */}
           <h1>My Events</h1>
           <div className="container d-flex flex-wrap justify-content-center">
 
