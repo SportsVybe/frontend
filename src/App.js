@@ -157,7 +157,7 @@ class App extends Component {
         // console.log(event)
         console.log(res.data._id)
         this.fetchData();
-        this.getMyEvents();ƒ
+        this.getMyEvents();
         this.setState(
           {
             message: "Posted Successfully",
