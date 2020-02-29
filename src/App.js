@@ -126,8 +126,9 @@ class App extends Component {
         // if there is a user logged in then fetch the user data and set the state
         if (res.data) {
           this.setUser(res.data);
+          console.log("loggedin", res.data)
           this.getUserLocation();
-          this.getMyEvents();
+          // this.getMyEvents();
           // this.setFeedbackMessage(
           //   `${res.data.username} successfully logged in`,
           //   true
