@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import Axios from "axios";
 import { myHistory } from "./index.js";
 import baseURL from "./services/base";
+import actions from "./services/index";
 
 //css
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -121,13 +122,14 @@ class App extends Component {
 
   /** make call to server to get the user data and save to set state */
   getUser = () => {
-    Axios.get(`${baseURL}/api/isLoggedIn`, { withCredentials: true })
+    // Axios.get(`${baseURL}/api/isLoggedIn`, { withCredentials: true })
+    actions.isLoggedIn()
       .then(res => {
         // if there is a user logged in then fetch the user data and set the state
         if (res.data) {
           this.setUser(res.data);
           console.log("loggedin", res.data)
-          this.getUserLocation();
+          // this.getUserLocation();
           // this.getMyEvents();
           // this.setFeedbackMessage(
           //   `${res.data.username} successfully logged in`,
@@ -143,7 +145,7 @@ class App extends Component {
             this.setState({ apiIsAwake: true });
           }, 2000);
         }
-        this.setState({ apiIsAwake: true });
+        // this.setState({ apiIsAwake: true });
       })
       .catch(err => {
         this.setFeedbackMessage(

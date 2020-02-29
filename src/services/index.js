@@ -1,7 +1,7 @@
 import axios from "axios";
 import baseURL from "./base";
 // let baseURL;
-console.log(baseURL);
+// console.log(baseURL);
 // process.env.NODE_ENV === "production"
 //   ? //? (baseURL = 'here should be your production endpoint')
 //     (baseURL = window.location.origin)
