@@ -3,16 +3,16 @@ import { Switch, Route } from "react-router-dom";
 import Axios from "axios";
 import { myHistory } from "./index.js";
 import baseURL from "./services/base";
+
+//css
 import "bootstrap/dist/css/bootstrap.min.css";
+
 //Components
-import Header from "./components/Header/Header";
-import SignIn from "./components/SignIn/SignIn";
 import Loading from "./components/Loading/Loading.js";
 import MyEvents from "./components/MyEvents/MyEvents.js";
 import ListOfParks from "./components/ListOfParks/ListOfParks";
 import ListOfEvents from "./components/ListOfEvents/ListOfEvents";
 import SinglePark from "./components/SinglePark/SinglePark";
-// import Random from "./components/RandomPark/RandomPark";
 import AddNewEvent from "./components/AddNewEvent/AddNewEvent";
 import SingleEvent from "./components/SingleEvent/SingleEvent";
 import SearchMap from "./components/Map/MapEventsOld";
@@ -21,8 +21,7 @@ import SignUp from "./components/SignUp/SignUp.js";
 import Login from "./components/Login/Login.js";
 import Home from "./components/Home/Home.js";
 
-// testing files
-// import FilterTesting from "./components/testing/filtertesting";
+
 
 class App extends Component {
   state = {
@@ -34,8 +33,6 @@ class App extends Component {
     errorMsg: null,
     successMsg: null,
     userLoggedIn: null,
-    sports: ["Soccer", "Basketball", "Volleyball", "Baseball"],
-    eventTitleOptions: ["Pick-Up", "League", "Practice", "Try-Outs"],
     filteredEvents: [],
     filteredParks: [],
     userLocation: {
@@ -46,16 +43,13 @@ class App extends Component {
     soccer: false,
     yoga: false,
     selectedOption: "all",
-    eventDescriptionLorem: ["Foul line 4-bagger slide hardball outfielder, rally left on base field. Fair right field 1-2-3 dead red bag passed ball double play. At-bat bleeder warning track starter wins cycle arm reds around the horn. Bunt shift shutout off-speed second base left on base rip sacrifice. Gap robbed outside range right fielder hey batter national pastime wins. Fair first base bunt chin music pine tar hot dog dead ball era astroturf lineup.",
-      "Leadoff airmail team at-bat bunt at-bat field fan. Second baseman earned run sacrifice fly squeeze third base loss second base. World series cup of coffee stadium field 1-2-3, out fastball. Rally ground ball stretch rake sweep stretch left fielder gapper rally. No-hitter sacrifice bunt bag fall classic league second base rip. Cycle rally dodgers friendly confines take butcher boy sacrifice fly.",
-      "Bleeder full count series first baseman contact ground ball outfield. Take astroturf third base cellar fielder's choice line drive can of corn in the hole. Bunt helmet series ground ball peanuts count base on balls. Starter count extra innings choke up left field petey pine tar. Robbed count good eye losses pinch hitter, sabremetrics error. Basehit mound extra innings warning track baseball pitchout rookie blue bush league.",
-      "Cardinals doubleheader nubber sacrifice bunt mitt silver slugger national pastime left fielder mendoza line. No decision assist left field outfield around the horn, 4-bagger swing walk off dodgers. Fair rhubarb run batted in second baseman starting pitcher gapper catcher. Astroturf stretch left field helmet loogy no decision force. Rotation baltimore chop butcher boy suicide squeeze third base slugging bases loaded strikeout play. Strikeout world series baltimore chop robbed second base left fielder line drive.",
-      "Ejection balk bench game grounder ground ball gapper. Forkball grand slam cheese pennant leather tigers bag balk airmail. 1-2-3 range run loogy steal bat wild pitch bench cellar. Grass backstop sport shift second baseman plate foul mendoza line. Full count cork game good eye chin music, team field rally season. League rubber cup of coffee passed ball unearned run outfielder slide warning track."]
-  };
+    eventDescriptionLorem: ["Foul line 4-bagger slide hardball outfielder, rally left on base field. Fair right field 1-2-3 dead red bag passed ball double play. At-bat bleeder warning track starter wins cycle arm reds around the horn. Bunt shift shutout off-speed second base left on base rip sacrifice. Gap robbed outside range right fielder hey batter national pastime wins. Fair first base bunt chin music pine tar hot dog dead ball era astroturf lineup."],
+    sports: ["Soccer", "Basketball", "Volleyball", "Baseball"],
+    eventTitleOptions: ["Pick-Up", "League", "Practice", "Try-Outs"],};
 
   async componentDidMount() {
     this.getUser();
-    this.fetchData();
+    // this.fetchData();
   }
 
   fetchData = () => {
@@ -120,11 +114,9 @@ class App extends Component {
 
   /** save the user data to the state */
   setUser = userObj => {
-    localStorage.setItem('user', JSON.stringify(userObj));
     this.setState({
       userLoggedIn: userObj
     });
-    console.log(localStorage.user)
   };
 
   /** make call to server to get the user data and save to set state */
@@ -133,8 +125,6 @@ class App extends Component {
       .then(res => {
         // if there is a user logged in then fetch the user data and set the state
         if (res.data) {
-
-          const user = JSON.parse(localStorage.getItem('user'));
           this.setUser(res.data);
           this.getUserLocation();
           this.getMyEvents();
@@ -163,10 +153,27 @@ class App extends Component {
   };
 
   checkIfUser = () => {
-
     if (this.state.userLoggedIn) {
-     return myHistory.push("/myevents/");
+      return myHistory.push("/myevents/");
     } else { myHistory.push("/login/") }
+  };
+
+  /** logout the user from the backend and delete all user data from state */
+  logout = () => {
+    Axios.get(`${baseURL}/api/logout`, { withCredentials: true })
+      .then(res => {
+        this.setUser(null);
+        // this.setState({
+        //   listOfTasks: [],
+        //   filterTaskList: [],
+        //   taskDataIsReady: false
+        // });
+        localStorage.removeItem('user');
+        this.setFeedbackMessage(`${res.data.message}`, true);
+      })
+      .catch(err => {
+        this.setFeedbackMessage(`Failed to logout user. Error: ${err}`, false);
+      });
   };
 
   getMyEvents = () => {
@@ -188,24 +195,6 @@ class App extends Component {
         console.log(err);
       });
   }
-
-  /** logout the user from the backend and delete all user data from state */
-  logout = () => {
-    Axios.get(`${baseURL}/api/logout`, { withCredentials: true })
-      .then(res => {
-        this.setUser(null);
-        // this.setState({
-        //   listOfTasks: [],
-        //   filterTaskList: [],
-        //   taskDataIsReady: false
-        // });
-        localStorage.removeItem('user');
-        this.setFeedbackMessage(`${res.data.message}`, true);
-      })
-      .catch(err => {
-        this.setFeedbackMessage(`Failed to logout user. Error: ${err}`, false);
-      });
-  };
 
   submitNewEvent = (
     e,

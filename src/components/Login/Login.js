@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import Axios from 'axios';
-import baseURL from '../../services/base';
 import { Link } from 'react-router-dom';
 import actions from "../../services/index";
 
@@ -17,30 +15,24 @@ export default class SignUp extends Component {
                 email: this.state.email,
                 password: this.state.password
             };
-
-            // Axios.post(`${baseURL}/api/login`, user, {
-            //   withCredentials: true
-            // })
+            
             actions
                 .logIn(user)
                 .then(response => {
-                    // console.log("handleFormSubmit");
                     this.setState({
                         email: "",
                         password: ""
                     });
                     this.props.setUser(response.data);
-                    this.props.getMyEvents();
-                    this.props.history.push("/map/");
+                    // this.props.getMyEvents();
+                    this.props.history.push("/myevents/");
                     this.props.setFlashMessage("Login successful", true);
                 })
                 .catch(err => {
                     // console.log(err);
                 });
         } else {
-            // figure out how to flash message
-            // console.log("please input both email and password");
-            this.toggleLoginButtonOff();
+            this.props.setFlashMessage("Please input both email and password", false);
         }
     };
 

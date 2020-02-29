@@ -6,7 +6,6 @@ import ShowMyEvents from "./ShowMyEvents"
 
 export default class MyEvents extends Component {
   
-  
     state = {
       myEventsFromDB: [],
       ready: false,
@@ -24,10 +23,8 @@ showMyEvents = () => {
   });
 };
 
-
-
   render() {
-    console.log('updated 2-localstorage')
+    console.log('updated 1 - stay logged in ')
     this.props.checkIfUser();
       return (
         <div>
@@ -39,8 +36,8 @@ showMyEvents = () => {
           <div className="container d-flex flex-wrap justify-content-center">
 
 
-            {/* <ShowMyEvents showMyEvents={this.showMyEvents} ready={this.state.ready} /> */}
-        {this.showMyEvents()}
+        {/* <ShowMyEvents showMyEvents={this.showMyEvents} ready={this.state.ready} /> */}
+        {/* {this.showMyEvents()} */}
 
           </div>
         </div>
