@@ -27,7 +27,7 @@ showMyEvents = () => {
 
 
   render() {
-    console.log('updated 1')
+    console.log('updated 2-localstorage')
     this.props.checkIfUser();
       return (
         <div>

@@ -124,6 +124,7 @@ class App extends Component {
     this.setState({
       userLoggedIn: userObj
     });
+    console.log(localStorage.user)
   };
 
   /** make call to server to get the user data and save to set state */
@@ -132,6 +133,8 @@ class App extends Component {
       .then(res => {
         // if there is a user logged in then fetch the user data and set the state
         if (res.data) {
+
+          const user = JSON.parse(localStorage.getItem('user'));
           this.setUser(res.data);
           this.getUserLocation();
           this.getMyEvents();
@@ -160,8 +163,8 @@ class App extends Component {
   };
 
   checkIfUser = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
+
+    if (this.state.userLoggedIn) {
      return myHistory.push("/myevents/");
     } else { myHistory.push("/login/") }
   };
