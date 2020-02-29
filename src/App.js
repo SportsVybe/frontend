@@ -55,7 +55,6 @@ class App extends Component {
 
   async componentDidMount() {
     this.getUser();
-    this.getUserLocation();
     this.fetchData();
   }
 
@@ -118,6 +117,89 @@ class App extends Component {
 
     navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
   }
+
+  /** save the user data to the state */
+  setUser = userObj => {
+    this.setState({
+      userLoggedIn: userObj
+    });
+  };
+
+  /** make call to server to get the user data and save to set state */
+  getUser = () => {
+    Axios.get(`${baseURL}/api/isLoggedIn`, { withCredentials: true })
+      .then(res => {
+        // if there is a user logged in then fetch the user data and set the state
+        if (res.data) {
+          this.setUser(res.data);
+          this.getUserLocation();
+          this.getMyEvents();
+          // this.setFeedbackMessage(
+          //   `${res.data.username} successfully logged in`,
+          //   true
+          // );
+          this.setFeedbackMessage(`${res.data.username} successfully logged in`, true);
+          setTimeout(() => {
+            this.setState({ apiIsAwake: true });
+          }, 2000);
+        } else {
+          this.setFeedbackMessage(`No user is currently logged in`, false);
+          setTimeout(() => {
+            this.setState({ apiIsAwake: true });
+          }, 2000);
+        }
+        this.setState({ apiIsAwake: true });
+      })
+      .catch(err => {
+        this.setFeedbackMessage(
+          `Failed to verify if there is a user logged in. Error: ${err}`,
+          false
+        );
+      });
+  };
+
+  checkIfUser = () => {
+    if (this.state.userLoggedIn !== null) {
+     return myHistory.push("/myevents/");
+    } else { myHistory.push("/login/") }
+  };
+
+  getMyEvents = () => {
+    //Events from DB
+    Axios
+      .get(`${baseURL}/api/myevents`, { withCredentials: true })
+      // `${baseURL}/api/event}`, { withCredentials: true }
+      // https://ironrest.herokuapp.com/avrahm
+      .then(res => {
+        let x = res.data;
+        console.log(x)
+        this.setState({
+          myEventsFromDB: x,
+          // filteredEvents: x,
+          apiIsAwake: true
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  /** logout the user from the backend and delete all user data from state */
+  logout = () => {
+    Axios.get(`${baseURL}/api/logout`, { withCredentials: true })
+      .then(res => {
+        this.setUser(null);
+        // this.setState({
+        //   listOfTasks: [],
+        //   filterTaskList: [],
+        //   taskDataIsReady: false
+        // });
+        this.setFeedbackMessage(`${res.data.message}`, true);
+      })
+      .catch(err => {
+        this.setFeedbackMessage(`Failed to logout user. Error: ${err}`, false);
+      });
+  };
 
   submitNewEvent = (
     e,
@@ -283,85 +365,6 @@ class App extends Component {
     }
   };
 
-  /** save the user data to the state */
-  setUser = userObj => {
-    this.setState({
-      userLoggedIn: userObj
-    });
-  };
-
-  /** make call to server to get the user data and save to set state */
-  getUser = () => {
-    Axios.get(`${baseURL}/api/isLoggedIn`, { withCredentials: true })
-      .then(res => {
-        // if there is a user logged in then fetch the user data and set the state
-        if (res.data) {
-          this.setUser(res.data);
-          this.getMyEvents();
-          // this.setFeedbackMessage(
-          //   `${res.data.username} successfully logged in`,
-          //   true
-          // );
-          this.setFeedbackMessage(`${res.data.username} successfully logged in`, true);
-          setTimeout(() => {
-            this.setState({ apiIsAwake: true });
-          }, 2000);
-        } else {
-          this.setFeedbackMessage(`No user is currently logged in`, false);
-          setTimeout(() => {
-            this.setState({ apiIsAwake: true });
-          }, 2000);
-        }
-        this.setState({ apiIsAwake: true });
-      })
-      .catch(err => {
-        this.setFeedbackMessage(
-          `Failed to verify if there is a user logged in. Error: ${err}`,
-          false
-        );
-      });
-  };
-
-
-  getMyEvents = () => {
-    //Events from DB
-    Axios
-      .get(`${baseURL}/api/myevents`, { withCredentials: true })
-      // `${baseURL}/api/event}`, { withCredentials: true }
-      // https://ironrest.herokuapp.com/avrahm
-      .then(res => {
-        let x = res.data;
-        console.log(x)
-        this.setState({
-          myEventsFromDB: x,
-          // filteredEvents: x,
-          apiIsAwake: true
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  /**
-   * logout the user from the backend and delete all user data from state
-   */
-  logout = () => {
-    Axios.get(`${baseURL}/api/logout`, { withCredentials: true })
-      .then(res => {
-        this.setUser(null);
-        // this.setState({
-        //   listOfTasks: [],
-        //   filterTaskList: [],
-        //   taskDataIsReady: false
-        // });
-        this.setFeedbackMessage(`${res.data.message}`, true);
-      })
-      .catch(err => {
-        this.setFeedbackMessage(`Failed to logout user. Error: ${err}`, false);
-      });
-  };
-
   setFeedbackMessage = (message, itIsSuccess) => {
     if (itIsSuccess) {
       this.setState({
@@ -499,6 +502,8 @@ class App extends Component {
                   ready={this.state.apiIsAwake}
                   filterFunction={this.filterFunction}
                   selectedOption={this.state.selectedOption}
+                  checkIfUser={this.checkIfUser}
+                  getMyEvents={this.getMyEvents}
                 />
               )}
             />

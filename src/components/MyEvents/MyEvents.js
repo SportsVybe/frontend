@@ -1,19 +1,34 @@
 import React, { Component } from "react";
 import FilterMenu from "../FilterMenu/FilterMenu";
 import EventCard from "../EventCard/EventCard";
+import ShowMyEvents from "./ShowMyEvents"
 
 
 export default class MyEvents extends Component {
   
+  
+    state = {
+      myEventsFromDB: [],
+      ready: false,
+    }
+  
 
-  showMyEvents = () => {
-    return this.props.myEventsFromDB.map((eachEvent, i) => {
-      return <EventCard eachEvent={eachEvent} key={i} />;
-    });
-  };
+async componentDidMount(){
+  this.props.getMyEvents()
+}
+
+showMyEvents = () => {
+  if(this.props.myEventsFromDB)
+  return this.props.myEventsFromDB.map((eachEvent, i) => {
+    return <EventCard eachEvent={eachEvent} key={i} />;
+  });
+};
+
+
 
   render() {
-    if (this.props.ready)
+    
+    this.props.checkIfUser();
       return (
         <div>
           {/* <FilterMenu
@@ -23,10 +38,14 @@ export default class MyEvents extends Component {
           <h1>My Events</h1>
           <div className="container d-flex flex-wrap justify-content-center">
 
-          {this.showMyEvents()}
+
+            {/* <ShowMyEvents showMyEvents={this.showMyEvents} ready={this.state.ready} /> */}
+        {this.showMyEvents()}
+
           </div>
         </div>
       );
-    else return <div>Loading...</div>;
+
+    
   }
 }
