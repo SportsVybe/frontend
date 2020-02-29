@@ -120,6 +120,7 @@ class App extends Component {
 
   /** save the user data to the state */
   setUser = userObj => {
+    localStorage.setItem('user', JSON.stringify(userObj));
     this.setState({
       userLoggedIn: userObj
     });
@@ -159,7 +160,8 @@ class App extends Component {
   };
 
   checkIfUser = () => {
-    if (this.state.userLoggedIn !== null) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
      return myHistory.push("/myevents/");
     } else { myHistory.push("/login/") }
   };
@@ -194,6 +196,7 @@ class App extends Component {
         //   filterTaskList: [],
         //   taskDataIsReady: false
         // });
+        localStorage.removeItem('user');
         this.setFeedbackMessage(`${res.data.message}`, true);
       })
       .catch(err => {
