@@ -27,7 +27,7 @@ showMyEvents = () => {
 
 
   render() {
-    
+    console.log('updated 1')
     this.props.checkIfUser();
       return (
         <div>
