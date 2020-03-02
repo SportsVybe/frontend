@@ -9,18 +9,18 @@ import actions from "./services/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 //Components
-import Loading from "./components/Loading/Loading.js";
-import MyEvents from "./components/MyEvents/MyEvents.js";
+import Loading from "./components/Loading/Loading";
+import MyEvents from "./components/MyEvents/MyEvents";
 import ListOfParks from "./components/ListOfParks/ListOfParks";
 import ListOfEvents from "./components/ListOfEvents/ListOfEvents";
 import SinglePark from "./components/SinglePark/SinglePark";
 import AddNewEvent from "./components/AddNewEvent/AddNewEvent";
 import SingleEvent from "./components/SingleEvent/SingleEvent";
 import SearchMap from "./components/Map/MapEventsOld";
-import Navbar from "./components/Navbar/Navbar.js";
-import SignUp from "./components/SignUp/SignUp.js";
-import Login from "./components/Login/Login.js";
-import Home from "./components/Home/Home.js";
+import Navbar from "./components/Navbar/Navbar";
+import SignUp from "./components/SignUp/SignUp";
+import Login from "./components/Login/Login";
+import Home from "./components/Home/Home";
 
 
 
