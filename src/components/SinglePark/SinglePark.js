@@ -41,8 +41,10 @@ class ParkPage extends React.Component {
       [e.target.name]: e.target.value
     });
   };
+
   //find events for the list of event that match the current park
   eventsAtThisPark = () => {
+    //eslint-disable-next-line
     let copyOfParkList = this.props.listOfEvents.map((events, i) => {
       if (events.location.id === this.props.match.params.id) {
         return <EventCard eachEvent={events} key={i} />;

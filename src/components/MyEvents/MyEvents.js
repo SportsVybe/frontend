@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import FilterMenu from "../FilterMenu/FilterMenu";
+// import FilterMenu from "../FilterMenu/FilterMenu";
 import EventCard from "../EventCard/EventCard";
-import ShowMyEvents from "./ShowMyEvents"
+// import ShowMyEvents from "./ShowMyEvents"
 
 
 export default class MyEvents extends Component {
