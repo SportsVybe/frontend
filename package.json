@@ -4,7 +4,7 @@
   "description": "a really cool app",
   "engines": {
     "npm": "6.4.1",
-    "node": "12.13.0"
+    "node": "12.15.0" 
   },
   "private": true,
   "dependencies": {
