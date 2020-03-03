@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "a really cool app",
   "engines": {
-    "npm": "16.4.1",
+    "npm": "6.4.1",
     "node": "12.13.0"
   },
   "private": true,
