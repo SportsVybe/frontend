@@ -37,7 +37,7 @@ export default class filtertesting extends Component {
     });
   };
   render() {
-    if (this.props.listOfParks && this.props.listOfEvents)
+    // if (this.props.listOfParks && this.props.listOfEvents)
       return (
         <div>
           <h1>Filter Testing</h1>
@@ -76,6 +76,6 @@ export default class filtertesting extends Component {
           <ul>{this.showEvents()}</ul>
         </div>
       );
-    else return <h1>Loading....</h1>;
+    // else return <h1>Loading....</h1>;
   }
 }

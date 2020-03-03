@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "../Loading/Loading.js";
+// import Loading from "../Loading/Loading.js";
 import EventCard from "../EventCard/EventCard";
 import MapComponent from "../Map/MapComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -56,7 +56,7 @@ class ParkPage extends React.Component {
   render() {
     // console.log(this.props.distanceFunction)
     //if the list of parks has loaded then return the data
-    if (this.props.listOfParks && this.props.listOfEvents) {
+    // if (this.props.listOfParks && this.props.listOfEvents) {
       //find the correct park by id from the props list of parks
       let thePark = this.props.listOfParks.find(park => {
         return park.attributes.ID === this.props.match.params.id;
@@ -247,9 +247,10 @@ class ParkPage extends React.Component {
           </div>
         </div>
       );
-    } else {
-      return <Loading />;
-    }
-  }
+    } 
+  //   else {
+  //     return <Loading />;
+  //   }
+  // }
 }
 export default ParkPage;

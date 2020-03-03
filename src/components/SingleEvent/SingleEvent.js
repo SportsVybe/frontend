@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MapComponent from "../Map/MapComponent";
-import Loading from "../Loading/Loading";
+// import Loading from "../Loading/Loading";
 
 //import images dynamically to the img src value
 function importAll(r) {
@@ -20,7 +20,7 @@ class EventPage extends React.Component {
   render() {
     // console.log(this.state.theEvent)
 
-    if (this.props.listOfEvents) {
+    // if (this.props.listOfEvents) {
       let theEventDetails = this.props.listOfEvents.find(event => {
         return event._id === this.props.match.params.id;
       });
@@ -66,10 +66,11 @@ class EventPage extends React.Component {
           </div>
         </div>
       );
-    } else {
-      return <Loading />;
-    }
-  }
+    } 
+  //   else {
+  //     return <Loading />;
+  //   }
+  // }
 }
 
 export default EventPage;
