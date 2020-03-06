@@ -7,7 +7,7 @@ import { myHistory } from "../../index.js";
 import FilterMenu from "../FilterMenu/FilterMenu"
 import parkImg from "../../images/park-map.png"
 import eventImg from "../../images/league-map.png"
-// import Loading from "../Loading/Loading.js"
+import Loading from "../Loading/Loading.js"
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -61,7 +61,7 @@ export class MapContainer extends Component {
   };
 
   render() {
-    // if (this.props.ready) {
+    if (this.props.ready) {
       return (
         <div>
           <Map
@@ -128,11 +128,10 @@ export class MapContainer extends Component {
           <FilterMenu selectedOption={this.props.selectedOption} filterFunction={this.props.filterFunction} />
         </div>
       );
-    } 
-  //   else {
-  //     return <Loading />;
-  //   }
-  // }
+    } else {
+      return <Loading />;
+    }
+  }
 }
 
 export default GoogleApiWrapper({

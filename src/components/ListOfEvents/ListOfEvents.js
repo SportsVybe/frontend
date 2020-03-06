@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FilterMenu from "../FilterMenu/FilterMenu";
 import EventCard from "../EventCard/EventCard";
+import Loading from "../Loading/Loading";
 
 export default class ListOfEvents extends Component {
   
@@ -11,7 +12,7 @@ export default class ListOfEvents extends Component {
   };
 
   render() {
-    // if (this.props.listOfEvents)
+    if (this.props.listOfEvents)
       return (
         <div>
           <FilterMenu
@@ -25,6 +26,6 @@ export default class ListOfEvents extends Component {
           </div>
         </div>
       );
-    // else return <div>Loading...</div>;
+    else return <Loading />;
   }
 }

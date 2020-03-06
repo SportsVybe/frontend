@@ -9,7 +9,7 @@ import actions from "./services/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 //Components
-// import Loading from "./components/Loading/Loading";
+import Loading from "./components/Loading/Loading";
 import MyEvents from "./components/MyEvents/MyEvents";
 import ListOfParks from "./components/ListOfParks/ListOfParks";
 import ListOfEvents from "./components/ListOfEvents/ListOfEvents";
@@ -50,7 +50,7 @@ class App extends Component {
 
   async componentDidMount() {
     this.getUser();
-    // this.fetchData();
+    this.fetchData();
   }
 
   fetchData = () => {
@@ -129,12 +129,12 @@ class App extends Component {
         if (res.data) {
           this.setUser(res.data);
           console.log("loggedin", res.data)
-          // this.getUserLocation();
-          // this.getMyEvents();
-          // this.setFeedbackMessage(
-          //   `${res.data.username} successfully logged in`,
-          //   true
-          // );
+          this.getUserLocation();
+          this.getMyEvents();
+          this.setFeedbackMessage(
+            `${res.data.username} successfully logged in`,
+            true
+          );
           this.setFeedbackMessage(`${res.data.username} successfully logged in`, true);
           setTimeout(() => {
             this.setState({ apiIsAwake: true });
@@ -145,7 +145,7 @@ class App extends Component {
             this.setState({ apiIsAwake: true });
           }, 2000);
         }
-        // this.setState({ apiIsAwake: true });
+        this.setState({ apiIsAwake: true });
       })
       .catch(err => {
         this.setFeedbackMessage(
@@ -187,7 +187,7 @@ class App extends Component {
       // https://ironrest.herokuapp.com/avrahm
       .then(res => {
         let x = res.data;
-        console.log(x)
+        // console.log(x)
         this.setState({
           myEventsFromDB: x,
           // filteredEvents: x,
@@ -384,7 +384,7 @@ class App extends Component {
   };
 
   render() {
-    // if (this.state.apiIsAwake) {
+    if (this.state.apiIsAwake) {
       return (
         <div className="App">
           <Navbar
@@ -547,10 +547,10 @@ class App extends Component {
         </div>
       );
     } 
-    // else {
-    //   return <Loading />;
-    // }
+    else {
+      return <Loading />;
+    }
   }
-// }
+}
 
 export default App;

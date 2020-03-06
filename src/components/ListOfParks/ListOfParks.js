@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import Loading from "../Loading/Loading";
+import Loading from "../Loading/Loading";
 import FilterMenu from '../FilterMenu/FilterMenu'
 import ParkCard from "../ParkCard/ParkCard";
 
@@ -17,7 +17,7 @@ export default class ListOfParks extends Component {
 
 
   render() {
-    // if (this.props.listOfParks)
+    if (this.props.listOfParks)
       return (
         <div>
          <FilterMenu selectedOption={this.props.selectedOption} filterFunction={this.props.filterFunction} />
@@ -29,6 +29,6 @@ export default class ListOfParks extends Component {
         </div>
 
       );
-    // else return <Loading />;
+    else return <Loading />;
   }
 }
