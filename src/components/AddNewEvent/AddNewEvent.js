@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import Axios from "axios";
 // import Header from "../HomeHeader/HomeHeader";
-import Loading from "../Loading/Loading";
+// import Loading from "../Loading/Loading";
 
 export default class AddNewEvent extends Component {
   constructor(props) {
@@ -175,6 +175,6 @@ export default class AddNewEvent extends Component {
           </form>
         </div>
       );
-    else return <Loading />;
+    else return <>Loading</>;
   }
 }

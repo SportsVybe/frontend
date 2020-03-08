@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MapComponent from "../Map/MapComponent";
-import Loading from "../Loading/Loading";
+// import Loading from "../Loading/Loading";
 
 //import images dynamically to the img src value
 function importAll(r) {
@@ -67,7 +67,7 @@ class EventPage extends React.Component {
         </div>
       );
     } else {
-      return <Loading />;
+      return <>Loading</>;
     }
   }
 }

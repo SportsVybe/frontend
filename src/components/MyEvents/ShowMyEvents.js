@@ -1,5 +1,5 @@
-import React from 'react'
-import Loading from '../Loading/Loading';
+import React from 'react';
+// import Loading from '../Loading/Loading';
 import EventCard from '../EventCard/EventCard';
 import Axios from 'axios';
 import baseURL from '../../services/base';
@@ -50,6 +50,6 @@ export default class ShowMyEvents extends React.Component {
                 {this.showMyEvents()}
             </>
         )
-        else return <Loading />;
+        else return <>Loading</>;
     }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "../Loading/Loading.js";
+// import Loading from "../Loading/Loading.js";
 import EventCard from "../EventCard/EventCard";
 import MapComponent from "../Map/MapComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -248,7 +248,7 @@ class ParkPage extends React.Component {
         </div>
       );
     } else {
-      return <Loading />;
+      return <>Loading</>;
     }
   }
 }

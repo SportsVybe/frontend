@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Loading from "../Loading/Loading";
-import FilterMenu from '../FilterMenu/FilterMenu'
+// import Loading from "../Loading/Loading";
+import FilterMenu from '../FilterMenu/FilterMenu';
 import ParkCard from "../ParkCard/ParkCard";
 
 
@@ -29,6 +29,6 @@ export default class ListOfParks extends Component {
         </div>
 
       );
-    else return <Loading />;
+    else return <>Loading</>;
   }
 }

@@ -9,7 +9,7 @@ import actions from "./services/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 //Components
-import Loading from "./components/Loading/Loading";
+// import Loading from "./components/Loading/Loading";
 import MyEvents from "./components/MyEvents/MyEvents";
 import ListOfParks from "./components/ListOfParks/ListOfParks";
 import ListOfEvents from "./components/ListOfEvents/ListOfEvents";
@@ -525,7 +525,7 @@ class App extends Component {
       );
     } 
     else {
-      return <Loading />;
+      return <>Loading</>;
     }
   }
 }

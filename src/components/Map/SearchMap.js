@@ -4,10 +4,10 @@ import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import InfoWindowEx from "./InfoWindowEx";
 import { myHistory } from "../../index.js";
 // import UserMarker from "./UserMarker";
-import FilterMenu from "../FilterMenu/FilterMenu"
-import parkImg from "../../images/park-map.png"
-import eventImg from "../../images/league-map.png"
-import Loading from "../Loading/Loading.js"
+import FilterMenu from "../FilterMenu/FilterMenu";
+import parkImg from "../../images/park-map.png";
+import eventImg from "../../images/league-map.png";
+// import Loading from "../Loading/Loading.js";
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -129,7 +129,7 @@ export class MapContainer extends Component {
         </div>
       );
     } else {
-      return <Loading />;
+      return <>Loading</>;
     }
   }
 }

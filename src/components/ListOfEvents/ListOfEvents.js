@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import FilterMenu from "../FilterMenu/FilterMenu";
 import EventCard from "../EventCard/EventCard";
-import Loading from "../Loading/Loading";
+// import Loading from "../Loading/Loading";
 
 export default class ListOfEvents extends Component {
   
@@ -26,6 +26,6 @@ export default class ListOfEvents extends Component {
           </div>
         </div>
       );
-    else return <Loading />;
+    else return <>Loading</>;
   }
 }
