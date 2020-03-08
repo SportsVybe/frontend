@@ -2,12 +2,8 @@
   "name": "react-sportsvybe",
   "version": "0.1.0",
   "description": "a really cool app",
-  "engines": {
-    "npm": "6.4.1",
-    "node": "12.15.0"
-  },
   "private": true,
-  "homepage": "https://sportsvybe-backend.herokuapp.com",
+  "homepage": "https://sportsvybe.netlify.com",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",

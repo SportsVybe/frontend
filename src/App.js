@@ -16,7 +16,7 @@ import ListOfEvents from "./components/ListOfEvents/ListOfEvents";
 import SinglePark from "./components/SinglePark/SinglePark";
 import AddNewEvent from "./components/AddNewEvent/AddNewEvent";
 import SingleEvent from "./components/SingleEvent/SingleEvent";
-import SearchMap from "./components/Map/MapEventsOld";
+import SearchMap from "./components/Map/SearchMap";
 import Navbar from "./components/Navbar/Navbar";
 import SignUp from "./components/SignUp/SignUp";
 import Login from "./components/Login/Login";
@@ -130,7 +130,6 @@ class App extends Component {
           this.setUser(res.data);
           console.log("loggedin", res.data)
           this.getUserLocation();
-          this.getMyEvents();
           this.setFeedbackMessage(
             `${res.data.username} successfully logged in`,
             true
@@ -179,25 +178,6 @@ class App extends Component {
       });
   };
 
-  getMyEvents = () => {
-    //Events from DB
-    Axios
-      .get(`${baseURL}/api/myevents`, { withCredentials: true })
-      // `${baseURL}/api/event}`, { withCredentials: true }
-      // https://ironrest.herokuapp.com/avrahm
-      .then(res => {
-        let x = res.data;
-        // console.log(x)
-        this.setState({
-          myEventsFromDB: x,
-          // filteredEvents: x,
-          apiIsAwake: true
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
 
   submitNewEvent = (
     e,
@@ -237,7 +217,6 @@ class App extends Component {
         // console.log(event)
         console.log(res.data._id)
         this.fetchData();
-        this.getMyEvents();
         this.setState(
           {
             message: "Posted Successfully",
@@ -425,7 +404,6 @@ class App extends Component {
                   ready={this.state.apiIsAwake}
                   userObj={this.state.userLoggedIn}
                   setUser={this.setUser}
-                  getMyEvents={this.getMyEvents}
                   setFlashMessage={this.setFeedbackMessage}
                 />
               )}
@@ -501,7 +479,6 @@ class App extends Component {
                   filterFunction={this.filterFunction}
                   selectedOption={this.state.selectedOption}
                   checkIfUser={this.checkIfUser}
-                  getMyEvents={this.getMyEvents}
                 />
               )}
             />
