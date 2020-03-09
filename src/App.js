@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 //Components
 // import Loading from "./components/Loading/Loading";
-import MyEvents from "./components/MyEvents/MyEvents";
+import Profile from "./components/Profile/Profile";
 import ListOfParks from "./components/ListOfParks/ListOfParks";
 import ListOfEvents from "./components/ListOfEvents/ListOfEvents";
 import SinglePark from "./components/SinglePark/SinglePark";
@@ -28,7 +28,6 @@ class App extends Component {
   state = {
     theParksFromMiamiDade: null,
     eventsFromDB: null,
-    myEventsFromDB: null,
     apiIsAwake: false,
     message: "",
     errorMsg: null,
@@ -156,7 +155,7 @@ class App extends Component {
 
   checkIfUser = () => {
     if (this.state.userLoggedIn) {
-      return myHistory.push("/myevents/");
+      return myHistory.push("/profile/");
     } else { myHistory.push("/login/") }
   };
 
@@ -470,15 +469,10 @@ class App extends Component {
             />
             <Route
               exact
-              path="/myevents/"
+              path="/profile/"
               render={props => (
-                <MyEvents
+                <Profile
                   {...props}
-                  myEventsFromDB={this.state.myEventsFromDB}
-                  ready={this.state.apiIsAwake}
-                  filterFunction={this.filterFunction}
-                  selectedOption={this.state.selectedOption}
-                  checkIfUser={this.checkIfUser}
                 />
               )}
             />

@@ -7,36 +7,31 @@ import baseURL from '../../services/base';
 export default class ShowMyEvents extends React.Component {
 
     state = {
-        myEventsFromDB : [],
+        myEventsFromDB: [],
         receivedMyEvents: false,
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.getMyEvents()
     }
 
     getMyEvents = () => {
         //Events from DB
         Axios
-          .get(`${baseURL}/api/myevents`, { withCredentials: true })
-          // `${baseURL}/api/event}`, { withCredentials: true }
-          // https://ironrest.herokuapp.com/avrahm
-          .then(res => {
-            let x = res.data;
-            // console.log(x)
-            this.setState({
-              myEventsFromDB: x,
-              // filteredEvents: x,
-              receivedMyEvents: true
+            .get(`${baseURL}/api/myevents`, { withCredentials: true })
+            .then(res => {
+                let x = res.data;
+                this.setState({
+                    myEventsFromDB: x,
+                    receivedMyEvents: true
+                });
+            })
+            .catch(err => {
+                console.log(err);
             });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
+    }
 
     showMyEvents = () => {
-        // console.log(this.state.myEventsFromDB)
         if (this.state.receivedMyEvents) {
             return this.state.myEventsFromDB.map((eachEvent, i) => {
                 return <EventCard eachEvent={eachEvent} key={i} />;
@@ -50,6 +45,6 @@ export default class ShowMyEvents extends React.Component {
                 {this.showMyEvents()}
             </>
         )
-        else return <>Loading</>;
+        else return <>Loading your events</>;
     }
 }
