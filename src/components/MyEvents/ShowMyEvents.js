@@ -11,7 +11,7 @@ export default class ShowMyEvents extends React.Component {
         receivedMyEvents: false,
     }
 
-    UNSAFE_componentWillMount(){
+    componentWillMount(){
         this.getMyEvents()
     }
 
