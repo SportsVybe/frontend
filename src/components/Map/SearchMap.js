@@ -7,7 +7,7 @@ import { myHistory } from "../../index.js";
 import FilterMenu from "../FilterMenu/FilterMenu";
 import parkImg from "../../images/park-map.png";
 import eventImg from "../../images/league-map.png";
-import Loading from "../Loading/Loading";
+import Loading from "../Loading/Loading.jsx";
 
 export class MapContainer extends Component {
   constructor(props) {
