@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ShowMyEvents from "./ShowMyEvents"
 
 
-export default class MyEvents extends Component {
+export default class Profile extends Component {
 
   render() {
 

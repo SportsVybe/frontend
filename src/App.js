@@ -39,6 +39,8 @@ class App extends Component {
       latitude: 0,
       longitude: 0
     },
+    redirect:true,
+    redirectCount:0,
     basketball: true,
     soccer: false,
     yoga: false,
@@ -115,29 +117,25 @@ class App extends Component {
   /** save the user data to the state */
   setUser = userObj => {
     this.setState({
-      userLoggedIn: userObj
+      userLoggedIn: userObj,
+      redirect: false
     });
   };
 
   /** make call to server to get the user data and save to set state */
   getUser = () => {
-    // Axios.get(`${baseURL}/api/isLoggedIn`, { withCredentials: true })
     actions.isLoggedIn()
       .then(res => {
         // if there is a user logged in then fetch the user data and set the state
         if (res.data) {
           this.setUser(res.data);
-          console.log("loggedin", res.data)
           this.getUserLocation();
-          this.setFeedbackMessage(
-            `${res.data.username} successfully logged in`,
-            true
-          );
           this.setFeedbackMessage(`${res.data.username} successfully logged in`, true);
           setTimeout(() => {
-            this.setState({ apiIsAwake: true });
+            this.setState({ apiIsAwake: true, redirect: false });
           }, 2000);
-        } else {
+        } 
+        else {
           this.setFeedbackMessage(`No user is currently logged in`, false);
           setTimeout(() => {
             this.setState({ apiIsAwake: true });
@@ -150,13 +148,17 @@ class App extends Component {
           `Failed to verify if there is a user logged in. Error: ${err}`,
           false
         );
+        this.setState({redirect:true})
       });
   };
 
   checkIfUser = () => {
-    if (this.state.userLoggedIn) {
+    if (this.state.userLoggedIn && !this.state.redirect && this.state.redirectCount===0) {
+      this.setState({redirectCount: 1})
       return myHistory.push("/profile/");
-    } else { myHistory.push("/login/") }
+    } else if (this.state.redirect){ 
+      myHistory.push("/login/") 
+    }
   };
 
   /** logout the user from the backend and delete all user data from state */
@@ -473,6 +475,17 @@ class App extends Component {
               render={props => (
                 <Profile
                   {...props}
+                  checkIfUser={this.checkIfUser}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/myevents/"
+              render={props => (
+                <Profile
+                  {...props}
+                  checkIfUser={this.checkIfUser}
                 />
               )}
             />
