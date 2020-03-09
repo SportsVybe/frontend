@@ -7,7 +7,7 @@ import { myHistory } from "../../index.js";
 import FilterMenu from "../FilterMenu/FilterMenu";
 import parkImg from "../../images/park-map.png";
 import eventImg from "../../images/league-map.png";
-// import Loading from "../Loading/Loading.js";
+import Loading from "../Loading/Loading";
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -129,11 +129,11 @@ export class MapContainer extends Component {
         </div>
       );
     } else {
-      return <>Loading</>;
+      return <Loading />;
     }
   }
 }
 
 export default GoogleApiWrapper({
-  apiKey: process.env.GOOGLE_API
+  apiKey: "AIzaSyDZiBSkaZztK2mN3Q8QzvzcfPCsDX2_p58"
 })(MapContainer);
