@@ -24,8 +24,7 @@ export default class SignUp extends Component {
                         password: ""
                     });
                     this.props.setUser(response.data);
-                    // this.props.getMyEvents();
-                    this.props.history.push("/myevents/");
+                    this.props.history.push("/profile/");
                     this.props.setFlashMessage("Login successful", true);
                 })
                 .catch(err => {
