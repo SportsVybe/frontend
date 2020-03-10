@@ -1,0 +1,35 @@
+.account-page {
+  background-color: rgba(234, 255, 254, 1);
+  /* position: fixed; */
+  height: calc(100vh - 42px);
+  /* top: 0;
+  left: 0; */
+  /* height: 100%; */
+  width: 100%;
+  z-index: -1;
+  background-size: cover;
+  background-repeat: none;
+  padding-top: 120px;
+  margin-top: 50px;
+}
+.account-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* background-color: rgba(36, 39, 43, 0.5); */
+  height: 100%;
+}
+.account-container {
+  /* color: rgba(16, 79, 85, 1); */
+  /* margin-top: 2%; */
+  /* border: 1px solid black; */
+  border-radius: 3%;
+  background-color: rgba(255, 255, 255, 0.5);
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  /* box-shadow: 0px 0px 8px 8px rgba(155, 196, 203, 0.8); */
+  height: 88vh;
+  max-width: 90vw;
+
+  padding-top: 120px;
+}

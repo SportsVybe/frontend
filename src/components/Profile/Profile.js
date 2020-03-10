@@ -9,7 +9,9 @@ export default class Profile extends Component {
     this.props.checkIfUser()
     return (
       <div>
+
         <h1>My Events</h1>
+
         <div className="container d-flex flex-wrap justify-content-center">
 
           <ShowMyEvents />
@@ -17,7 +19,5 @@ export default class Profile extends Component {
         </div>
       </div>
     );
-
-
   }
 }

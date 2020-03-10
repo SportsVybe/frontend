@@ -4,6 +4,7 @@ import Axios from "axios";
 import { myHistory } from "./index.js";
 import baseURL from "./services/base";
 import actions from "./services/index";
+import "./services/googleapi";
 
 //css
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -513,6 +514,9 @@ class App extends Component {
                   sports={this.state.sports}
                   descriptionLorem={this.state.eventDescriptionLorem}
                   eventTitleOptions={this.state.eventTitleOptions}
+                  setFlashMessage={this.state.setFlashMessage}
+                  setUser={this.state.setUser}
+                  userObj={this.state.userObj}
                 />
               )}
             />

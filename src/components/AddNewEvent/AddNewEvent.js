@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Zones from "./Zones";
 // import Axios from "axios";
 // import Header from "../HomeHeader/HomeHeader";
 // import Loading from "../Loading/Loading";
@@ -13,6 +14,7 @@ export default class AddNewEvent extends Component {
         lat: 0,
         lon: 0,
         name: "",
+        place_id: "",
         id: ""
       },
       description: "",
@@ -39,22 +41,22 @@ export default class AddNewEvent extends Component {
 
   render() {
     // console.log(this.props.description)
-    setTimeout(() => {
-      this.setState({
-        location: {
-          name: this.props.listOfParks[Math.floor(Math.random() * 792)]
-            .attributes.NAME,
-          address: this.props.listOfParks[Math.floor(Math.random() * 792)]
-            .attributes.ADDRESS,
-          lat: this.props.listOfParks[Math.floor(Math.random() * 792)]
-            .attributes.LAT,
-          lon: this.props.listOfParks[Math.floor(Math.random() * 792)]
-            .attributes.LON,
-          id: this.props.listOfParks[Math.floor(Math.random() * 792)].attributes
-            .ID
-        }
-      });
-    }, 5000);
+    // setTimeout(() => {
+    //   this.setState({
+    //     location: {
+    //       name: this.props.listOfParks[Math.floor(Math.random() * 792)]
+    //         .attributes.NAME,
+    //       address: this.props.listOfParks[Math.floor(Math.random() * 792)]
+    //         .attributes.ADDRESS,
+    //       lat: this.props.listOfParks[Math.floor(Math.random() * 792)]
+    //         .attributes.LAT,
+    //       lon: this.props.listOfParks[Math.floor(Math.random() * 792)]
+    //         .attributes.LON,
+    //       id: this.props.listOfParks[Math.floor(Math.random() * 792)].attributes
+    //         .ID
+    //     }
+    //   });
+    // }, 5000);
     if (this.props.listOfParks)
       return (
         <div>
@@ -78,6 +80,14 @@ export default class AddNewEvent extends Component {
           >
             <button className="button btn-lg">Submit</button>
             <br />
+
+            <Zones
+              setFlashMessage={this.props.setFlashMessage}
+              setUser={this.props.setUser}
+              userObj={this.props.userObj}
+              
+            />
+
             <label htmlFor="title">title</label>
             <input
               className="form-control"
