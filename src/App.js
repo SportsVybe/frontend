@@ -188,7 +188,6 @@ class App extends Component {
   ) => {
     e.preventDefault();
 
-    // let theEventsCopy = {...this.state.eventsFromDB}
     let imgGen = sport.toLowerCase() + Math.floor(Math.random() * 3) + ".jpg";
     const newEvent = {
       title: title,
@@ -199,39 +198,43 @@ class App extends Component {
       img: imgGen,
       // status: status
     };
-    console.log(newEvent)
-    // Axios
-    //   .post(`${baseURL}/api/event`, newEvent
-    //     , { withCredentials: true }
-    //   )
-    //   .then(res => {
-    //     // let eventCopy = [...this.state.eventsFromDB];
-    //     // // console.log(res)
-    //     // eventCopy.push(res.data.ops[0]);
-    //     // console.log(event)
-    //     console.log(res.data._id)
-    //     this.fetchData();
-    //     this.setState(
-    //       {
-    //         message: "Posted Successfully",
-    //         // eventsFromDB: eventCopy
-    //       },
-    //       () =>
-    //         setTimeout(() => {
-    //           this.setState({
-    //             message: ""
-    //           });
-    //           myHistory.push("/singleevent/" + res.data._id);
-    //         }, 1000)
-    //     );
-    //   })
-    //   .catch(err => {
-    //     // console.error(newEvent)
-    //     this.setState({
-    //       message: "Error!"
-    //     });
-    //   });
+    // console.log(newEvent)
+    this.postEventToDB(newEvent)
   };
+
+  postEventToDB = (newEvent) => {
+    Axios
+      .post(`${baseURL}/api/event`, newEvent
+        , { withCredentials: true }
+      )
+      .then(res => {
+        // let eventCopy = [...this.state.eventsFromDB];
+        // // console.log(res)
+        // eventCopy.push(res.data.ops[0]);
+        // console.log(event)
+        console.log(res.data._id)
+        this.fetchData();
+        this.setState(
+          {
+            message: "Posted Successfully",
+            // eventsFromDB: eventCopy
+          },
+          () =>
+            setTimeout(() => {
+              this.setState({
+                message: ""
+              });
+              myHistory.push("/singleevent/" + res.data._id);
+            }, 1000)
+        );
+      })
+      .catch(err => {
+        // console.error(newEvent)
+        this.setState({
+          message: "Error!"
+        });
+      });
+  }
 
   submitParkUpdateFunction = (
     e,
