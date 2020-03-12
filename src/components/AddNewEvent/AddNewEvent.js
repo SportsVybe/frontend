@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import Zones from "./Zones";
+import GooglePlaceSearchInput from "./GooglePlaceSearchInput";
 // import Axios from "axios";
 // import Header from "../HomeHeader/HomeHeader";
 // import Loading from "../Loading/Loading";
+import DatePicker from "react-datepicker"
+
+import "react-datepicker/dist/react-datepicker.css";
+import FormInput from "./FormInput";
 
 export default class AddNewEvent extends Component {
   constructor(props) {
@@ -10,25 +14,20 @@ export default class AddNewEvent extends Component {
     this.state = {
       title: "",
       location: {
-        address: "",
-        lat: 0,
-        lon: 0,
         name: "",
+        address: "",
+        lat: "",
+        lon: "",
         place_id: "",
-        id: ""
+        md_parks_id: ""
       },
       description: "",
       sport: "",
-      date:
-        Math.floor(Math.random() * 11 + 1) +
-        "/" +
-        Math.floor(Math.random() * 28 + 1) +
-        "/2020",
-      time:
-        Math.floor(Math.random() * 11 + 1) +
-        ":" +
-        Math.floor(Math.random() * 60 + 1),
-      message: ""
+      message: "",
+      startDate: new Date(),
+      eventDescriptionLorem: ["Foul line 4-bagger slide hardball outfielder, rally left on base field. Fair right field 1-2-3 dead red bag passed ball double play.", "At-bat bleeder warning track starter wins cycle arm reds around the horn. Bunt shift shutout off-speed second base left on base rip sacrifice.", "Gap robbed outside range right fielder hey batter national pastime wins. Fair first base bunt chin music pine tar hot dog dead ball era astroturf lineup."],
+      sports: ["Soccer", "Basketball", "Volleyball", "Baseball"],
+      eventTitleOptions: ["Pick-Up", "League", "Practice", "Try-Outs"],
     };
   }
 
@@ -39,149 +38,104 @@ export default class AddNewEvent extends Component {
     });
   };
 
-  render() {
-    // console.log(this.props.description)
-    // setTimeout(() => {
-    //   this.setState({
+  handleChange = date => {
+    this.setState({
+      startDate: date
+    });
+  };
+
+  generateEvent = () => {
+    const sport = this.state.sports[Math.floor(Math.random() * 4)];
+    this.setState({
+      title: sport + " " + this.state.eventTitleOptions[Math.floor(Math.random() * 4)],
+      sport: sport,
+      description: this.state.eventDescriptionLorem[Math.floor(Math.random() * 3)],
+    })
+  }
+
+  checkMap = (e, placeDetailsFromGoogle) => {
+    e.preventDefault();
+    // console.log(placeDetailsFromGoogle);
+    this.generateEvent();
+    this.setState({
+      location: placeDetailsFromGoogle
+    })
+
+    //   let updatelocation = {
     //     location: {
-    //       name: this.props.listOfParks[Math.floor(Math.random() * 792)]
-    //         .attributes.NAME,
-    //       address: this.props.listOfParks[Math.floor(Math.random() * 792)]
-    //         .attributes.ADDRESS,
-    //       lat: this.props.listOfParks[Math.floor(Math.random() * 792)]
-    //         .attributes.LAT,
-    //       lon: this.props.listOfParks[Math.floor(Math.random() * 792)]
-    //         .attributes.LON,
-    //       id: this.props.listOfParks[Math.floor(Math.random() * 792)].attributes
-    //         .ID
+    //       name: this.state.location.home.name,
+    //       address: this.state.location.home.address,
+    //       lat: this.state.location.home.lat,
+    //       lng: this.state.location.home.lng
     //     }
-    //   });
-    // }, 5000);
+    //   };
+
+    //   Axios.post(`${baseURL}/api/editprofile/location`, updatelocation, {
+    //     withCredentials: true
+    //   })
+    //     .then(response => {
+    //       this.props.setUser(response.data);
+    //       console.log("Zone Updated");
+    //       this.props.setFlashMessage("location are set", true);
+    //       // this.props.history.push("/account");
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+  };
+
+  render() {
+
     if (this.props.listOfParks)
       return (
         <div>
-          {/* <Header /> */}
           <h1>{this.props.message}</h1>
           <form
             className="container"
             onSubmit={e => {
               this.props.submitEventFunction(
                 e,
-                this.props.sports[Math.floor(Math.random() * 4)]
-                +" " +
-                this.props.eventTitleOptions[Math.floor(Math.random() * 4)],
+                this.state.title,
                 this.state.location,
-                this.props.descriptionLorem[Math.floor(Math.random() * 5)],
-                this.props.sports[Math.floor(Math.random() * 4)],
-                this.state.date,
-                this.state.time
+                this.state.description,
+                this.state.sport,
+                this.state.startDate
               );
             }}
           >
             <button className="button btn-lg">Submit</button>
             <br />
 
-            <Zones
-              setFlashMessage={this.props.setFlashMessage}
-              setUser={this.props.setUser}
-              userObj={this.props.userObj}
-              
+            <GooglePlaceSearchInput
+              checkMap={this.checkMap}
             />
 
-            <label htmlFor="title">title</label>
-            <input
-              className="form-control"
-              type="text"
-              name="title"
-              onChange={this.handleInput}
-              defaultValue={
-                this.props.sports[Math.floor(Math.random() * 2)] +
-                " " +
-                this.props.eventTitleOptions[Math.floor(Math.random() * 4)]
-              }
-            />
-            <label htmlFor="location">Location ID</label>
-            <input
-              className="form-control"
-              type="text"
-              name="location"
-              onChange={this.handleInput}
-              defaultValue={this.state.location.id}
-            />
-            <label htmlFor="location">Location Name</label>
-            <input
-              className="form-control"
-              type="text"
-              name="location"
-              onChange={this.handleInput}
-              defaultValue={this.state.location.name}
-            />
-            <label htmlFor="location">Location Address</label>
-            <input
-              className="form-control"
-              type="text"
-              name="location"
-              onChange={this.handleInput}
-              defaultValue={this.state.location.address}
-            />
-            <label htmlFor="location">Location Lat</label>
-            <input
-              className="form-control"
-              type="text"
-              name="location"
-              onChange={this.handleInput}
-              defaultValue={this.state.location.lat}
-            />
-            <label htmlFor="location">Location Long</label>
-            <input
-              className="form-control"
-              type="text"
-              name="location"
-              onChange={this.handleInput}
-              defaultValue={this.state.location.lon}
-            />
-            <label htmlFor="description">Description</label>
-            <textarea
-              className="form-control"
-              type="text"
-              name="description"
-              height="100px"
-              onChange={this.handleInput}
-              value={this.props.descriptionLorem[Math.floor(Math.random() * 4)]}
-            ></textarea>
-            <label htmlFor="sport">Sport</label>
-            <input
-              className="form-control"
-              type="text"
-              name="sport"
-              onChange={this.handleInput}
-              value={this.props.sports[Math.floor(Math.random() * 2)]}
-              // {this.state.sport}
-            />
+            <FormInput type="text" name="locationID" onChange={this.onChange} defaultValue={this.state.location.place_id} />
+
+            <FormInput type="text" name="locationName" onChange={this.onChange} defaultValue={this.state.location.name} />
+
+            <FormInput type="text" name="locationAddress" onChange={this.onChange} defaultValue={this.state.location.address} />
+
+            <FormInput type="text" name="locationLat" onChange={this.onChange} defaultValue={this.state.location.lat} />
+
+            <FormInput type="text" name="locationLon" onChange={this.onChange} defaultValue={this.state.location.lon} />
+
+            <FormInput type="text" name="title" onChange={this.onChange} defaultValue={this.state.title} />
+
+            <FormInput type="textarea" name="description" onChange={this.onChange} defaultValue={this.state.description} />
+
+            <FormInput type="text" name="sport" onChange={this.onChange} defaultValue={this.state.sport} />
+
             <label htmlFor="date">Date</label>
-            <input
+            <br />
+            <DatePicker selected={this.state.startDate}
+              // onSelect={this.handleSelect} 
+              onChange={this.handleChange}
+              showTimeSelect
+              dateFormat="Pp"
               className="form-control"
-              type="text"
-              name="date"
-              onChange={this.handleInput}
-              defaultValue={this.state.date}
-            />
-            <label htmlFor="time">Time</label>
-            <input
-              className="form-control"
-              type="text"
-              name="time"
-              onChange={this.handleInput}
-              defaultValue={this.state.time}
-            />
-            <label htmlFor="user">User</label>
-            <input
-              className="form-control"
-              type="text"
-              name="user"
-              onChange={this.handleInput}
-              defaultValue={this.state.user}
-            />
+            /><br />
+
           </form>
         </div>
       );

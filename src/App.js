@@ -45,10 +45,7 @@ class App extends Component {
     basketball: true,
     soccer: false,
     yoga: false,
-    selectedOption: "all",
-    eventDescriptionLorem: ["Foul line 4-bagger slide hardball outfielder, rally left on base field. Fair right field 1-2-3 dead red bag passed ball double play. At-bat bleeder warning track starter wins cycle arm reds around the horn. Bunt shift shutout off-speed second base left on base rip sacrifice. Gap robbed outside range right fielder hey batter national pastime wins. Fair first base bunt chin music pine tar hot dog dead ball era astroturf lineup."],
-    sports: ["Soccer", "Basketball", "Volleyball", "Baseball"],
-    eventTitleOptions: ["Pick-Up", "League", "Practice", "Try-Outs"],};
+    selectedOption: "all",};
 
   async componentDidMount() {
     this.getUser();
@@ -187,58 +184,53 @@ class App extends Component {
     location,
     description,
     sport,
-    date,
-    time,
-    // user
+    date
   ) => {
     e.preventDefault();
 
     // let theEventsCopy = {...this.state.eventsFromDB}
     let imgGen = sport.toLowerCase() + Math.floor(Math.random() * 3) + ".jpg";
-    let titleGen = sport + " " + this.state.eventTitleOptions[Math.floor(Math.random() * 3)]
     const newEvent = {
-      title: titleGen,
+      title: title,
       description: description,
       location: location,
-      // user: user,
       date: date,
       sport: sport,
       img: imgGen,
-      time: time,
       // status: status
     };
-
-    Axios
-      .post(`${baseURL}/api/event`, newEvent
-        , { withCredentials: true }
-      )
-      .then(res => {
-        // let eventCopy = [...this.state.eventsFromDB];
-        // // console.log(res)
-        // eventCopy.push(res.data.ops[0]);
-        // console.log(event)
-        console.log(res.data._id)
-        this.fetchData();
-        this.setState(
-          {
-            message: "Posted Successfully",
-            // eventsFromDB: eventCopy
-          },
-          () =>
-            setTimeout(() => {
-              this.setState({
-                message: ""
-              });
-              myHistory.push("/singleevent/" + res.data._id);
-            }, 1000)
-        );
-      })
-      .catch(err => {
-        // console.error(newEvent)
-        this.setState({
-          message: "Error!"
-        });
-      });
+    console.log(newEvent)
+    // Axios
+    //   .post(`${baseURL}/api/event`, newEvent
+    //     , { withCredentials: true }
+    //   )
+    //   .then(res => {
+    //     // let eventCopy = [...this.state.eventsFromDB];
+    //     // // console.log(res)
+    //     // eventCopy.push(res.data.ops[0]);
+    //     // console.log(event)
+    //     console.log(res.data._id)
+    //     this.fetchData();
+    //     this.setState(
+    //       {
+    //         message: "Posted Successfully",
+    //         // eventsFromDB: eventCopy
+    //       },
+    //       () =>
+    //         setTimeout(() => {
+    //           this.setState({
+    //             message: ""
+    //           });
+    //           myHistory.push("/singleevent/" + res.data._id);
+    //         }, 1000)
+    //     );
+    //   })
+    //   .catch(err => {
+    //     // console.error(newEvent)
+    //     this.setState({
+    //       message: "Error!"
+    //     });
+    //   });
   };
 
   submitParkUpdateFunction = (
@@ -511,9 +503,6 @@ class App extends Component {
                   listOfParks={this.state.theParksFromMiamiDade}
                   message={this.state.message}
                   submitEventFunction={this.submitNewEvent}
-                  sports={this.state.sports}
-                  descriptionLorem={this.state.eventDescriptionLorem}
-                  eventTitleOptions={this.state.eventTitleOptions}
                   setFlashMessage={this.state.setFlashMessage}
                   setUser={this.state.setUser}
                   userObj={this.state.userObj}

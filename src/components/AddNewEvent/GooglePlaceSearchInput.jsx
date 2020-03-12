@@ -3,7 +3,7 @@ import { FormLabel, InputGroup, Row, Col } from "react-bootstrap";
 // import baseURL from "../../services/base";
 // import Axios from "axios";
 //components
-// import ZoneSearchInput from "../../ZoneSearchInput/ZoneSearchInput"
+// import locationearchInput from "../../locationearchInput/locationearchInput"
 
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -16,50 +16,24 @@ import "../../services/googleapi";
 import "./Account.css";
 import { FormControl, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStopCircle, faMap } from "@fortawesome/free-solid-svg-icons";
+import { faStopCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-export default class Zones extends React.Component {
+export default class GooglePlaceSearchInput extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       address: "",
-      zones: {
+      location: {
         name: "",
         address: "",
         lat: "",
-        lng: "",
+        lon: "",
+        id: "",
         place_id: ""
       },
-      ready: true
     };
   }
-
-  checkMap = event => {
-    event.preventDefault();
-    console.log("check map");
-    //   let updateZones = {
-    //     zones: {
-    //       name: this.state.zones.home.name,
-    //       address: this.state.zones.home.address,
-    //       lat: this.state.zones.home.lat,
-    //       lng: this.state.zones.home.lng
-    //     }
-    //   };
-
-    //   Axios.post(`${baseURL}/api/editprofile/zones`, updateZones, {
-    //     withCredentials: true
-    //   })
-    //     .then(response => {
-    //       this.props.setUser(response.data);
-    //       console.log("Zone Updated");
-    //       this.props.setFlashMessage("Zones are set", true);
-    //       // this.props.history.push("/account");
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
-  };
 
   clearLocationInput = location => {
     this.setState({
@@ -74,9 +48,13 @@ export default class Zones extends React.Component {
   handleSelect = address => {
     geocodeByAddress(address).then(results => {
       let result = results[0];
+      let name = result.address_components[0];
+      console.log(results[0])
       this.setState({
         address: result.formatted_address,
-        zones: {
+        location: {
+          name: name.long_name,
+          address: result.formatted_address,
           place_id: result.place_id
         }
       });
@@ -87,11 +65,12 @@ export default class Zones extends React.Component {
       .then(latLng => {
         console.log(latLng);
         this.setState({
-          zones: {
-            // name: "home",
-            place_id: this.state.zones.place_id,
+          location: {
+            name: this.state.location.name,
+            address: this.state.location.address,
+            place_id: this.state.location.place_id,
             lat: latLng.lat,
-            lng: latLng.lng
+            lon: latLng.lng
           }
         });
 
@@ -99,9 +78,12 @@ export default class Zones extends React.Component {
       })
       .catch(error => console.error("Error", error));
   };
+
+  
   render() {
     return (
       <div>
+      {/* {location_detail = this.state.location} */}
         <Row>
           <Col>
             <PlacesAutocomplete
@@ -119,7 +101,7 @@ export default class Zones extends React.Component {
                 loading
               }) => (
                 <>
-                  <FormLabel>Location</FormLabel>
+                  <FormLabel>Search</FormLabel>
                   <InputGroup>
                     <FormControl
                       {...getInputProps({
@@ -131,11 +113,11 @@ export default class Zones extends React.Component {
                     <InputGroup.Append>
                       <Button
                         variant="outline-secondary"
-                        onClick={event => {
-                          this.checkMap(event);
+                        onClick={(e) => {
+                          this.props.checkMap(e, this.state.location)
                         }}
                       >
-                        <FontAwesomeIcon icon={faMap} /> Map
+                        <FontAwesomeIcon icon={faCheck} /> Check
                       </Button>
                     </InputGroup.Append>
                     <InputGroup.Append>

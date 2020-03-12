@@ -46,6 +46,7 @@ class ParkPage extends React.Component {
   eventsAtThisPark = () => {
     //eslint-disable-next-line
     let copyOfParkList = this.props.listOfEvents.map((events, i) => {
+      //NEED TO UPDATE location.id to location.md_parks_id
       if (events.location.id === this.props.match.params.id) {
         return <EventCard eachEvent={events} key={i} />;
       }
