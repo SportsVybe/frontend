@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 // import Axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faClock } from "@fortawesome/free-solid-svg-icons";
+var moment = require('moment');
 
 function importAll(r) {
   let images = {};
@@ -15,9 +16,22 @@ function importAll(r) {
 const images = importAll(
   require.context("../../images", false, /\.(png|jpe?g|svg)$/)
 );
+
+
 export default class EventCard extends Component {
   
+  formatDate = () => {
+    return moment(this.props.eachEvent.date).format('dddd, MMMM Do, YYYY');
+  }
+
+  formatTime = () => {
+   return moment(this.props.eachEvent.date).format('h:mm A');
+  }
+  
+  
   render() {
+    // const date =  this.props.eachEvent.date;
+    // const time =  this.props.eachEvent.date.toLocaleTimeString('en-US');
     return (
       <div className="event-card col-12 col-md-5" >
         <Link to={"/singleevent/" + this.props.eachEvent._id}>
@@ -35,11 +49,11 @@ export default class EventCard extends Component {
             <div className="col-6">
               <p className="date flex-row d-flex align-items-center">
                 <FontAwesomeIcon icon={faCalendarAlt} />
-                <span>{this.props.eachEvent.date}</span>
+                <span>{this.formatDate()}</span>
               </p>
               <p className="time flex-row d-flex align-items-center">
                 <FontAwesomeIcon icon={faClock} />
-                <span>{this.props.eachEvent.time}</span>
+                <span>{this.formatTime()}</span>
               </p>
             </div>
             <div className="col-6">
