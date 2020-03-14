@@ -34,7 +34,7 @@ export default class ShowMyEvents extends React.Component {
     showMyEvents = () => {
         if (this.state.receivedMyEvents) {
             return this.state.myEventsFromDB.map((eachEvent, i) => {
-                return <EventCard eachEvent={eachEvent} key={i} />;
+                return <EventCard formatDate={this.props.formatDate} formatTime={this.props.formatTime} eachEvent={eachEvent} key={i} />;
             });
         }
     };

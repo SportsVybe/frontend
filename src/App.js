@@ -487,6 +487,8 @@ class App extends Component {
                 <Profile
                   {...props}
                   checkIfUser={this.checkIfUser}
+                  formatDate={this.formatDate}
+                  formatTime={this.formatTime}
                 />
               )}
             />
@@ -497,6 +499,8 @@ class App extends Component {
                 <Profile
                   {...props}
                   checkIfUser={this.checkIfUser}
+                  formatDate={this.formatDate}
+                  formatTime={this.formatTime}
                 />
               )}
             />

@@ -14,7 +14,7 @@ export default class Profile extends Component {
 
         <div className="container d-flex flex-wrap justify-content-center">
 
-          <ShowMyEvents />
+          <ShowMyEvents formatDate={this.props.formatDate} formatTime={this.props.formatTime}  />
 
         </div>
       </div>

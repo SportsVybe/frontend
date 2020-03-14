@@ -111,7 +111,7 @@ export default class GooglePlaceSearchInput extends React.Component {
                       <Button
                         variant="outline-secondary"
                         onClick={(e) => {
-                          this.props.matchLocationToDB(e, this.state.location)
+                          this.props.matchLocation(e, this.state.location)
                         }}
                       >
                         <FontAwesomeIcon icon={faCheck} /> Check
