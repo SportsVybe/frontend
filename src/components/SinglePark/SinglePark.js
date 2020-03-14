@@ -48,7 +48,7 @@ class ParkPage extends React.Component {
     let copyOfParkList = this.props.listOfEvents.map((events, i) => {
       //NEED TO UPDATE location.id to location.md_parks_id
       if (events.location.id === this.props.match.params.id) {
-        return <EventCard eachEvent={events} key={i} />;
+        return <EventCard formatDate={this.props.formatDate} formatTime={this.props.formatTime} eachEvent={events} key={i} />;
       }
     });
     return copyOfParkList;

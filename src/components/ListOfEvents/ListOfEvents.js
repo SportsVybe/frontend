@@ -7,7 +7,7 @@ export default class ListOfEvents extends Component {
   
   showEvents = () => {
     return this.props.listOfEvents.map((eachEvent, i) => {
-      return <EventCard eachEvent={eachEvent} key={i} />;
+      return <EventCard formatDate={this.props.formatDate} formatTime={this.props.formatTime} eachEvent={eachEvent} key={i} />;
     });
   };
 

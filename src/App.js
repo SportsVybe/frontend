@@ -5,6 +5,7 @@ import { myHistory } from "./index.js";
 import baseURL from "./services/base";
 import actions from "./services/index";
 import "./services/googleapi";
+import moment from "moment";
 
 //css
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -178,7 +179,7 @@ class App extends Component {
   };
 
 
-  submitNewEvent = (
+  createNewEvent = (
     e,
     title,
     location,
@@ -234,6 +235,14 @@ class App extends Component {
           message: "Error!"
         });
       });
+  }
+
+  formatDate = (date) => {
+    return moment(date).format('dddd, MMMM Do, YYYY');
+  }
+
+  formatTime = (time) => {
+   return moment(time).format('h:mm A');
   }
 
   submitParkUpdateFunction = (
@@ -434,6 +443,8 @@ class App extends Component {
                   distanceFunction={this.distanceFunction}
                   submitParkUpdateFunction={this.submitParkUpdateFunction}
                   message={this.state.message}
+                  formatDate={this.formatDate}
+                  formatTime={this.formatTime}
                 />
               )}
             />
@@ -449,6 +460,8 @@ class App extends Component {
                   selectedOption={this.state.selectedOption}
                   userLocation={this.state.userLocation}
                   distanceFunction={this.distanceFunction}
+                  formatDate={this.formatDate}
+                  formatTime={this.formatTime}
                 />
               )}
             />
@@ -462,6 +475,8 @@ class App extends Component {
                   ready={this.state.apiIsAwake}
                   filterFunction={this.filterFunction}
                   selectedOption={this.state.selectedOption}
+                  formatDate={this.formatDate}
+                  formatTime={this.formatTime}
                 />
               )}
             />
@@ -494,6 +509,8 @@ class App extends Component {
                   listOfEvents={this.state.eventsFromDB}
                   ready={this.state.apiIsAwake}
                   message={this.state.message}
+                  formatDate={this.formatDate}
+                  formatTime={this.formatTime}
                 />
               )}
             />
@@ -505,7 +522,7 @@ class App extends Component {
                   {...props}
                   listOfParks={this.state.theParksFromMiamiDade}
                   message={this.state.message}
-                  submitEventFunction={this.submitNewEvent}
+                  createNewEvent={this.createNewEvent}
                   setFlashMessage={this.state.setFlashMessage}
                   setUser={this.state.setUser}
                   userObj={this.state.userObj}

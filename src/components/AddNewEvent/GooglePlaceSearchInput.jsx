@@ -49,7 +49,6 @@ export default class GooglePlaceSearchInput extends React.Component {
     geocodeByAddress(address).then(results => {
       let result = results[0];
       let name = result.address_components[0];
-      console.log(results[0])
       this.setState({
         address: result.formatted_address,
         location: {
@@ -63,7 +62,6 @@ export default class GooglePlaceSearchInput extends React.Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
-        console.log(latLng);
         this.setState({
           location: {
             name: this.state.location.name,
@@ -74,7 +72,6 @@ export default class GooglePlaceSearchInput extends React.Component {
           }
         });
 
-        console.log(this.state);
       })
       .catch(error => console.error("Error", error));
   };
@@ -114,7 +111,7 @@ export default class GooglePlaceSearchInput extends React.Component {
                       <Button
                         variant="outline-secondary"
                         onClick={(e) => {
-                          this.props.checkMap(e, this.state.location)
+                          this.props.matchLocationToDB(e, this.state.location)
                         }}
                       >
                         <FontAwesomeIcon icon={faCheck} /> Check

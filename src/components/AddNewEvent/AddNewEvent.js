@@ -53,9 +53,29 @@ export default class AddNewEvent extends Component {
     })
   }
 
-  checkMap = (e, placeDetailsFromGoogle) => {
+
+
+
+  matchGooglePlaceToMiamiDadeParkList = (e, placeDetailsFromGoogle) => {
     e.preventDefault();
-    // console.log(placeDetailsFromGoogle);
+    // let placeToCheck = placeDetailsFromGoogle;
+
+    const arrOfParks = this.props.listOfParks.map(park => {
+      return park.attributes
+    })
+
+    function isMatch(park){
+      if(park.NAME===placeDetailsFromGoogle.name){return true}
+    }
+    // return arrOfParks
+   
+    console.log(placeDetailsFromGoogle)
+    console.log("=======")
+
+    console.log(arrOfParks.filter(isMatch));
+
+
+
     this.generateEvent();
     this.setState({
       location: placeDetailsFromGoogle
@@ -93,7 +113,7 @@ export default class AddNewEvent extends Component {
           <form
             className="container"
             onSubmit={e => {
-              this.props.submitEventFunction(
+              this.props.createNewEvent(
                 e,
                 this.state.title,
                 this.state.location,
@@ -107,7 +127,7 @@ export default class AddNewEvent extends Component {
             <br />
 
             <GooglePlaceSearchInput
-              checkMap={this.checkMap}
+              matchLocationToDB={this.matchLocationToDB}
             />
 
             <FormInput type="text" name="locationID" onChange={this.onChange} defaultValue={this.state.location.place_id} />

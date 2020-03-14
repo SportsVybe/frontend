@@ -39,8 +39,8 @@ class EventPage extends React.Component {
             </div>
             <div className="row">
               <div className="col-12 col-md-5 event-page-info">
-                <h5>Date: {theEvent.date}</h5>
-                <h5>Time: {theEvent.time}</h5>
+                <h5>Date: {this.props.formatDate(theEvent.date)}</h5>
+                <h5>Time: {this.props.formatTime(theEvent.date)}</h5>
                 <hr />
                 <h4>Event Organizer</h4>
                 <h5>User: {theEvent.user}</h5>
