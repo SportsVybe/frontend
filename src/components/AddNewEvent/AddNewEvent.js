@@ -15,7 +15,7 @@ export default class AddNewEvent extends Component {
     super();
     this.state = {
       title: "",
-      location: {
+      venue: {
         name: "",
         address: "",
         lat: "",
@@ -55,13 +55,18 @@ export default class AddNewEvent extends Component {
     })
   }
 
+  matchGooglePlacetoDB = (placeDetailsFromGoogle) => {
+    this.generateEvent();
+    this.setState({
+      venue: placeDetailsFromGoogle
+    })
+    const arrOfDBVenues = this.props.listOfVenuesFromDB.map(venue => {return venue})
+  }
+
   //check if the name from google match any of the name from miami-dade parks
   matchGooglePlaceToMiamiDadeParkList = (placeDetailsFromGoogle) => {
     // e.preventDefault();
-    this.generateEvent();
-    this.setState({
-      location: placeDetailsFromGoogle
-    })
+    
     const arrOfParks = this.props.listOfParks.map(park => {return park.attributes})
 
     let matchedParkDetails = arrOfParks.filter(park => { if (park.NAME === placeDetailsFromGoogle.name) { return true } });
@@ -74,30 +79,30 @@ export default class AddNewEvent extends Component {
       console.log("No place details")
     }
     else if (isMatch(matchedParkDetails[0])) {
-      let locationDetails = {
+      let venueDetails = {
         name: placeDetailsFromGoogle.name,
         places_data: placeDetailsFromGoogle,
         parks_data: matchedParkDetails[0]
       };
       
-      this.postLocationToDB(locationDetails)
+      this.postVenueToDB(venueDetails)
     } else {
       this.props.setFlashMessage('Not a match', false);
-      let locationDetails = {
+      let venueDetails = {
         name: placeDetailsFromGoogle.name,
         places_data: placeDetailsFromGoogle
       };
-      this.postLocationToDB(locationDetails)
+      this.postVenueToDB(venueDetails)
     }
   };
 
-  postLocationToDB = (locationDetails) => {
-    Axios.post(`${baseURL}/api/newlocation`, locationDetails, {
+  postVenueToDB = (venueDetails) => {
+    Axios.post(`${baseURL}/api/newvenue`, venueDetails, {
       withCredentials: true
     })
       .then(response => {
         // this.props.setUser(response.data);
-        this.props.setFlashMessage("New location added!", true);
+        this.props.setFlashMessage("New venue added!", true);
         // this.props.history.push("/account");
       })
       .catch(err => {
@@ -118,7 +123,7 @@ export default class AddNewEvent extends Component {
               this.props.createNewEvent(
                 e,
                 this.state.title,
-                this.state.location,
+                this.state.venue,
                 this.state.description,
                 this.state.sport,
                 this.state.startDate
@@ -129,18 +134,18 @@ export default class AddNewEvent extends Component {
             <br />
 
             <GooglePlaceSearchInput
-              matchLocation={this.matchGooglePlaceToMiamiDadeParkList}
+              matchVenue={this.matchGooglePlaceToMiamiDadeParkList}
             />
 
-            <FormInput type="text" name="locationID" onChange={this.onChange} defaultValue={this.state.location.place_id} />
+            <FormInput type="text" name="venueID" onChange={this.onChange} defaultValue={this.state.venue.place_id} />
 
-            <FormInput type="text" name="locationName" onChange={this.onChange} defaultValue={this.state.location.name} />
+            <FormInput type="text" name="venueName" onChange={this.onChange} defaultValue={this.state.venue.name} />
 
-            <FormInput type="text" name="locationAddress" onChange={this.onChange} defaultValue={this.state.location.address} />
+            <FormInput type="text" name="venueAddress" onChange={this.onChange} defaultValue={this.state.venue.address} />
 
-            <FormInput type="text" name="locationLat" onChange={this.onChange} defaultValue={this.state.location.lat} />
+            <FormInput type="text" name="venueLat" onChange={this.onChange} defaultValue={this.state.venue.lat} />
 
-            <FormInput type="text" name="locationLon" onChange={this.onChange} defaultValue={this.state.location.lon} />
+            <FormInput type="text" name="venueLon" onChange={this.onChange} defaultValue={this.state.venue.lon} />
 
             <FormInput type="text" name="title" onChange={this.onChange} defaultValue={this.state.title} />
 

@@ -49,15 +49,15 @@ class EventPage extends React.Component {
                 <h5>Sport: {theEvent.sport.toUpperCase()}</h5>
                 <p>{theEvent.description}</p>
               </div>
-              <div className="col-12 col-md-5 event-page-location map">
+              <div className="col-12 col-md-5 event-page-venue map">
                 <h4>Map</h4>
-                <Link to={"/singlepark/" + theEvent.location.id}>
-                  <h4>{theEvent.location.name}</h4>
+                <Link to={"/singlepark/" + theEvent.venue.id}>
+                  <h4>{theEvent.venue.name}</h4>
                 </Link>
-                <p>{theEvent.location.address}</p>
+                <p>{theEvent.venue.address}</p>
                 <MapComponent
-                  lat={theEvent.location.lat}
-                  lon={theEvent.location.lon}
+                  lat={theEvent.venue.lat}
+                  lon={theEvent.venue.lon}
                   details={theEvent}
                   id="event"
                 />

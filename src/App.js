@@ -30,6 +30,7 @@ class App extends Component {
   state = {
     theParksFromMiamiDade: null,
     eventsFromDB: null,
+    venuesFromDB: null,
     apiIsAwake: false,
     message: "",
     errorMsg: null,
@@ -41,12 +42,13 @@ class App extends Component {
       latitude: 0,
       longitude: 0
     },
-    redirect:true,
-    redirectCount:0,
+    redirect: true,
+    redirectCount: 0,
     basketball: true,
     soccer: false,
     yoga: false,
-    selectedOption: "all",};
+    selectedOption: "all",
+  };
 
   async componentDidMount() {
     this.getUser();
@@ -74,8 +76,6 @@ class App extends Component {
     //Events from DB
     Axios
       .get(`${baseURL}/api/events`, { withCredentials: true })
-      // `${baseURL}/api/event}`, { withCredentials: true }
-      // https://ironrest.herokuapp.com/avrahm
       .then(res => {
         let x = res.data;
         // console.log(x)
@@ -83,6 +83,22 @@ class App extends Component {
           eventsFromDB: x,
           filteredEvents: x,
           apiIsAwake: true
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    //Events from DB
+    Axios
+      .get(`${baseURL}/api/venues`, { withCredentials: true })
+      .then(res => {
+        let x = res.data;
+        // console.log(x)
+        this.setState({
+          venuesFromDB: x,
+          // filteredvenues: x,
+          // apiIsAwake: true
         });
       })
       .catch(err => {
@@ -133,7 +149,7 @@ class App extends Component {
           setTimeout(() => {
             this.setState({ apiIsAwake: true, redirect: false });
           }, 2000);
-        } 
+        }
         else {
           this.setFeedbackMessage(`No user is currently logged in`, false);
           setTimeout(() => {
@@ -147,16 +163,16 @@ class App extends Component {
           `Failed to verify if there is a user logged in. Error: ${err}`,
           false
         );
-        this.setState({redirect:true})
+        this.setState({ redirect: true })
       });
   };
 
   checkIfUser = () => {
-    if (this.state.userLoggedIn && !this.state.redirect && this.state.redirectCount===0) {
-      this.setState({redirectCount: 1})
+    if (this.state.userLoggedIn && !this.state.redirect && this.state.redirectCount === 0) {
+      this.setState({ redirectCount: 1 })
       return myHistory.push("/profile/");
-    } else if (this.state.redirect){ 
-      myHistory.push("/login/") 
+    } else if (this.state.redirect) {
+      myHistory.push("/login/")
     }
   };
 
@@ -182,7 +198,7 @@ class App extends Component {
   createNewEvent = (
     e,
     title,
-    location,
+    venue,
     description,
     sport,
     date
@@ -193,7 +209,7 @@ class App extends Component {
     const newEvent = {
       title: title,
       description: description,
-      location: location,
+      venue: venue,
       date: date,
       sport: sport,
       img: imgGen,
@@ -242,55 +258,8 @@ class App extends Component {
   }
 
   formatTime = (time) => {
-   return moment(time).format('h:mm A');
+    return moment(time).format('h:mm A');
   }
-
-  submitParkUpdateFunction = (
-    e,
-    location,
-    sport,
-    phone,
-    user
-  ) => {
-    e.preventDefault();
-
-    // let theEventsCopy = {...this.state.eventsFromDB}
-    const parkUpdate = {
-      location: location,
-      sport: sport,
-      phone: phone,
-      user: user
-    };
-
-    Axios
-      .post("https://ironrest.herokuapp.com/avrahm", { event: parkUpdate })
-      .then(res => {
-        // let eventCopy = [...this.state.eventsFromDB];
-        // console.log(res)
-        // eventCopy.push(res.data.ops[0]);
-        // console.log(event)
-        // console.log(res)
-        this.setState(
-          {
-            message: "Posted Successfully",
-            // eventsFromDB: eventCopy
-          },
-          // () =>
-          //   setTimeout(() => {
-          //     this.setState({
-          //       message: ""
-          //     });
-          //     // myHistory.push("/singleevent/" + res.data.ops[0]._id);
-          //   }, 1000)
-        );
-      })
-      .catch(err => {
-        // console.error(err)
-        this.setState({
-          message: "Error!"
-        });
-      });
-  };
 
   distanceFunction = (lat1, lon1, lat2, lon2, unit) => {
     if ((lat1 === lat2) && (lon1 === lon2)) {
@@ -525,6 +494,7 @@ class App extends Component {
                 <AddNewEvent
                   {...props}
                   listOfParks={this.state.theParksFromMiamiDade}
+                  listOfVenuesFromDB={this.state.venuesFromDB}
                   message={this.state.message}
                   createNewEvent={this.createNewEvent}
                   setFlashMessage={this.setFeedbackMessage}
@@ -547,7 +517,7 @@ class App extends Component {
           )}
         </div>
       );
-    } 
+    }
     else {
       return <>Loading</>;
     }

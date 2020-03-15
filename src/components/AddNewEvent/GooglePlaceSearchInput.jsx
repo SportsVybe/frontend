@@ -3,7 +3,7 @@ import { FormLabel, InputGroup, Row, Col } from "react-bootstrap";
 // import baseURL from "../../services/base";
 // import Axios from "axios";
 //components
-// import locationearchInput from "../../locationearchInput/locationearchInput"
+// import venueearchInput from "../../venueearchInput/venueearchInput"
 
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -24,7 +24,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 
     this.state = {
       address: "",
-      location: {
+      venue: {
         name: "",
         address: "",
         lat: "",
@@ -35,7 +35,7 @@ export default class GooglePlaceSearchInput extends React.Component {
     };
   }
 
-  clearLocationInput = location => {
+  clearVenueInput = venue => {
     this.setState({
       address: ""
     });
@@ -51,7 +51,7 @@ export default class GooglePlaceSearchInput extends React.Component {
       let name = result.address_components[0];
       this.setState({
         address: result.formatted_address,
-        location: {
+        venue: {
           name: name.long_name,
           address: result.formatted_address,
           place_id: result.place_id
@@ -63,10 +63,10 @@ export default class GooglePlaceSearchInput extends React.Component {
       .then(results => getLatLng(results[0]))
       .then(latLng => {
         this.setState({
-          location: {
-            name: this.state.location.name,
-            address: this.state.location.address,
-            place_id: this.state.location.place_id,
+          venue: {
+            name: this.state.venue.name,
+            address: this.state.venue.address,
+            place_id: this.state.venue.place_id,
             lat: latLng.lat,
             lon: latLng.lng
           }
@@ -80,7 +80,7 @@ export default class GooglePlaceSearchInput extends React.Component {
   render() {
     return (
       <div>
-      {/* {location_detail = this.state.location} */}
+      {/* {venue_detail = this.state.venue} */}
         <Row>
           <Col>
             <PlacesAutocomplete
@@ -103,7 +103,7 @@ export default class GooglePlaceSearchInput extends React.Component {
                     <FormControl
                       {...getInputProps({
                         placeholder: "Search Places ...",
-                        className: "location-search-input"
+                        className: "venue-search-input"
                       })}
                     />
 
@@ -111,7 +111,7 @@ export default class GooglePlaceSearchInput extends React.Component {
                       <Button
                         variant="outline-secondary"
                         onClick={() => {
-                          this.props.matchLocation(this.state.location)
+                          this.props.matchVenue(this.state.venue)
                         }}
                       >
                         <FontAwesomeIcon icon={faCheck} /> Check
@@ -120,7 +120,7 @@ export default class GooglePlaceSearchInput extends React.Component {
                     <InputGroup.Append>
                       <Button
                         variant="outline-secondary"
-                        onClick={this.clearLocationInput}
+                        onClick={this.clearVenueInput}
                       >
                         <FontAwesomeIcon icon={faStopCircle} /> Clear
                       </Button>

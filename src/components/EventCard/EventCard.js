@@ -48,10 +48,10 @@ export default class EventCard extends Component {
               </p>
             </div>
             <div className="col-6">
-              <h5 className="location-name">
-                {this.props.eachEvent.location.name}
+              <h5 className="venue-name">
+                {this.props.eachEvent.venue.name}
               </h5>
-              <h6>{this.props.eachEvent.location.address}</h6>
+              <h6>{this.props.eachEvent.venue.address}</h6>
             </div>
           </div>
 

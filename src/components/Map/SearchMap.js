@@ -98,7 +98,7 @@ export class MapContainer extends Component {
                   id={"event"}
                   place_={place}
                   icon={{ url: eventImg }}
-                  position={{ lat: place.location.lat, lng: place.location.lon }}
+                  position={{ lat: place.venue.lat, lng: place.venue.lon }}
                 />
               );
             })}

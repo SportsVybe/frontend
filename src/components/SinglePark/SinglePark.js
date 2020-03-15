@@ -25,7 +25,7 @@ class ParkPage extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      location: {
+      venue: {
         address: "",
         name: "",
       },
@@ -46,8 +46,8 @@ class ParkPage extends React.Component {
   eventsAtThisPark = () => {
     //eslint-disable-next-line
     let copyOfParkList = this.props.listOfEvents.map((events, i) => {
-      //NEED TO UPDATE location.id to location.md_parks_id
-      if (events.location.id === this.props.match.params.id) {
+      //NEED TO UPDATE venue.id to venue.md_parks_id
+      if (events.venue.id === this.props.match.params.id) {
         return <EventCard formatDate={this.props.formatDate} formatTime={this.props.formatTime} eachEvent={events} key={i} />;
       }
     });
@@ -176,7 +176,7 @@ class ParkPage extends React.Component {
             onSubmit={e => {
               this.props.submitParkUpdateFunction(
                 e,
-                this.state.location,
+                this.state.venue,
                 this.state.sport,
                 this.state.phone,
                 this.state.user
@@ -186,19 +186,19 @@ class ParkPage extends React.Component {
             <br />
            
             <h1>{this.props.message}</h1>
-            <label htmlFor="location">Location Name</label>
+            <label htmlFor="venue">Venue Name</label>
             <input
               className="form-control"
               type="text"
-              name="location"
+              name="venue"
               onChange={this.handleInput}
               defaultValue={thePark.attributes.NAME}
             />
-            <label htmlFor="location">Location Address</label>
+            <label htmlFor="venue">Venue Address</label>
             <input
               className="form-control"
               type="text"
-              name="location"
+              name="venue"
               onChange={this.handleInput}
               defaultValue={thePark.attributes.ADDRESS}
             />
