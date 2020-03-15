@@ -527,7 +527,7 @@ class App extends Component {
                   listOfParks={this.state.theParksFromMiamiDade}
                   message={this.state.message}
                   createNewEvent={this.createNewEvent}
-                  setFlashMessage={this.state.setFlashMessage}
+                  setFlashMessage={this.setFeedbackMessage}
                   setUser={this.state.setUser}
                   userObj={this.state.userObj}
                 />
