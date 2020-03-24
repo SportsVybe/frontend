@@ -16,7 +16,12 @@ import PlacesAutocomplete, {
 import "./Account.css";
 import { FormControl, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStopCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faStopCircle,
+  faCheck,
+  faSearch,
+  faStar
+} from "@fortawesome/free-solid-svg-icons";
 
 export default class GooglePlaceSearchInput extends React.Component {
   constructor(props) {
@@ -24,21 +29,16 @@ export default class GooglePlaceSearchInput extends React.Component {
 
     this.state = {
       address: "",
-      venue: {
-        name: "",
-        address: "",
-        lat: "",
-        lon: "",
-        id: "",
-        place_id: ""
-      },
+      googlePlace: ""
     };
   }
 
-  clearVenueInput = venue => {
+  clearVenueInput = () => {
     this.setState({
-      address: ""
+      address: "",
+      googlePlace: ""
     });
+    this.props.clearVenueInput();
   };
 
   handleChange = address => {
@@ -51,7 +51,7 @@ export default class GooglePlaceSearchInput extends React.Component {
       let name = result.address_components[0];
       this.setState({
         address: result.formatted_address,
-        venue: {
+        googlePlace: {
           name: name.long_name,
           address: result.formatted_address,
           place_id: result.place_id
@@ -63,24 +63,22 @@ export default class GooglePlaceSearchInput extends React.Component {
       .then(results => getLatLng(results[0]))
       .then(latLng => {
         this.setState({
-          venue: {
-            name: this.state.venue.name,
-            address: this.state.venue.address,
-            place_id: this.state.venue.place_id,
+          googlePlace: {
+            name: this.state.googlePlace.name,
+            address: this.state.googlePlace.address,
+            place_id: this.state.googlePlace.place_id,
             lat: latLng.lat,
             lon: latLng.lng
           }
         });
-
       })
       .catch(error => console.error("Error", error));
   };
 
-  
   render() {
     return (
       <div>
-      {/* {venue_detail = this.state.venue} */}
+        {/* {venue_detail = this.state.venue} */}
         <Row>
           <Col>
             <PlacesAutocomplete
@@ -98,25 +96,50 @@ export default class GooglePlaceSearchInput extends React.Component {
                 loading
               }) => (
                 <>
-                  <FormLabel>Search</FormLabel>
+                  <FormLabel>Venue</FormLabel>
                   <InputGroup>
                     <FormControl
                       {...getInputProps({
-                        placeholder: "Search Places ...",
+                        placeholder: "Google Search ...",
                         className: "venue-search-input"
                       })}
                     />
-
-                    <InputGroup.Append>
-                      <Button
-                        variant="outline-secondary"
-                        onClick={() => {
-                          this.props.matchVenue(this.state.venue)
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faCheck} /> Check
-                      </Button>
-                    </InputGroup.Append>
+                    {this.props.confirmedVenueNotification ? (
+                      <InputGroup.Append>
+                        <Button
+                          variant="outline-success"
+                          disabled="disabled"
+                        >
+                          <FontAwesomeIcon icon={faStar} /> Success
+                        </Button>
+                      </InputGroup.Append>
+                    ) : this.props.confirmVenueToggle ? (
+                      <InputGroup.Append>
+                        <Button
+                          variant="outline-warning"
+                          onClick={() => {
+                            this.props.matchGooglePlaceToMiamiDadeParkList(
+                              this.state.googlePlace
+                            );
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faCheck} /> Confirm
+                        </Button>
+                      </InputGroup.Append>
+                    ) : (
+                      <InputGroup.Append>
+                        <Button
+                          variant="outline-secondary"
+                          onClick={() => {
+                            this.props.matchGooglePlacetoDB(
+                              this.state.googlePlace
+                            );
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faSearch} /> Search
+                        </Button>
+                      </InputGroup.Append>
+                    )}
                     <InputGroup.Append>
                       <Button
                         variant="outline-secondary"

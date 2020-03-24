@@ -32,7 +32,6 @@ class App extends Component {
     eventsFromDB: null,
     venuesFromDB: null,
     apiIsAwake: false,
-    message: "",
     errorMsg: null,
     successMsg: null,
     userLoggedIn: null,
@@ -89,7 +88,7 @@ class App extends Component {
         console.log(err);
       });
 
-    //Events from DB
+    //Venues from DB
     Axios
       .get(`${baseURL}/api/venues`, { withCredentials: true })
       .then(res => {
@@ -194,65 +193,6 @@ class App extends Component {
       });
   };
 
-
-  createNewEvent = (
-    e,
-    title,
-    venue,
-    description,
-    sport,
-    date
-  ) => {
-    e.preventDefault();
-
-    let imgGen = sport.toLowerCase() + Math.floor(Math.random() * 3) + ".jpg";
-    const newEvent = {
-      title: title,
-      description: description,
-      venue: venue,
-      date: date,
-      sport: sport,
-      img: imgGen,
-      // status: status
-    };
-    // console.log(newEvent)
-    this.postEventToDB(newEvent)
-  };
-
-  postEventToDB = (newEvent) => {
-    Axios
-      .post(`${baseURL}/api/event`, newEvent
-        , { withCredentials: true }
-      )
-      .then(res => {
-        // let eventCopy = [...this.state.eventsFromDB];
-        // // console.log(res)
-        // eventCopy.push(res.data.ops[0]);
-        // console.log(event)
-        console.log(res.data._id)
-        this.fetchData();
-        this.setState(
-          {
-            message: "Posted Successfully",
-            // eventsFromDB: eventCopy
-          },
-          () =>
-            setTimeout(() => {
-              this.setState({
-                message: ""
-              });
-              myHistory.push("/singleevent/" + res.data._id);
-            }, 1000)
-        );
-      })
-      .catch(err => {
-        // console.error(newEvent)
-        this.setState({
-          message: "Error!"
-        });
-      });
-  }
-
   formatDate = (date) => {
     return moment(date).format('dddd, MMMM Do, YYYY');
   }
@@ -355,7 +295,11 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={props => (<Home />)} />
+              render={props => (
+                <Home
+                  {...props}
+                  listOfParks={this.state.theParksFromMiamiDade}
+                />)} />
             <Route
               exact
               path="/signup/"
@@ -493,13 +437,15 @@ class App extends Component {
               render={props => (
                 <AddNewEvent
                   {...props}
+                  checkIfUser={this.checkIfUser}
                   listOfParks={this.state.theParksFromMiamiDade}
                   listOfVenuesFromDB={this.state.venuesFromDB}
-                  message={this.state.message}
-                  createNewEvent={this.createNewEvent}
+                  // message={this.state.message}
+                  // createNewEvent={this.createNewEvent}
                   setFlashMessage={this.setFeedbackMessage}
                   setUser={this.state.setUser}
                   userObj={this.state.userObj}
+                  fetchData={this.fetchData}
                 />
               )}
             />
