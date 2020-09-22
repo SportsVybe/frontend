@@ -19,20 +19,24 @@ export default class AddNewEvent extends Component {
       description: "",
       sport: "",
       startDate: new Date(),
+      venue_id: null,
       message: "",
       venue: {
-        name: "",
-        address: "",
-        lat: "",
-        lon: "",
-        place_id: "",
-        md_parks_id: ""
+        name: null,
+        address: null,
+        lat: null,
+        lon: null,
+        place_id: null
       },
-      venue_id: "",
+      latLon: {
+        lat: null,
+        lon: null,
+      },
       showVenueForm: false,
       submitToggle: false,
       confirmVenueToggle: false,
       confirmedVenueNotification: false,
+      disableSearchInput: false,
       eventDescriptionLorem: ["Foul line 4-bagger slide hardball outfielder, rally left on base field. Fair right field 1-2-3 dead red bag passed ball double play.", "At-bat bleeder warning track starter wins cycle arm reds around the horn. Bunt shift shutout off-speed second base left on base rip sacrifice.", "Gap robbed outside range right fielder hey batter national pastime wins. Fair first base bunt chin music pine tar hot dog dead ball era astroturf lineup."],
       sports: ["Soccer", "Basketball", "Volleyball", "Baseball"],
       eventTitleOptions: ["Pick-Up", "League", "Practice", "Try-Outs"],
@@ -42,8 +46,15 @@ export default class AddNewEvent extends Component {
   handleInput = e => {
     // 
     this.setState({
-      [e.target.name]: e.target.value
-    });
+       [e.target.name]: e.target.value 
+    }, () => { console.log(this.state) });
+  };
+
+  handleVenueInput = e => {
+    // 
+    this.setState({
+      venue: { [e.target.name]: e.target.value }
+    }, () => { console.log(this.state.venue) });
   };
 
   handleChange = date => {
@@ -63,11 +74,12 @@ export default class AddNewEvent extends Component {
 
   clearVenueInput = venue => {
     this.setState({
-      venue_id: "",
+      venue_id: null,
       submitToggle: false,
       showVenueForm: false,
       confirmedVenueNotification: false,
-      confirmVenueToggle: false
+      confirmVenueToggle: false,
+      disableSearchInput: false,
     });
   };
 
@@ -104,7 +116,7 @@ export default class AddNewEvent extends Component {
       )
       .then(res => {
         // let eventCopy = [...this.state.eventsFromDB];
-        // // console.log(res)
+        // console.log(res)
         // eventCopy.push(res.data.ops[0]);
         // console.log(event)
         console.log(res.data._id)
@@ -136,23 +148,49 @@ export default class AddNewEvent extends Component {
     if (placeDetailsFromGoogle) {
       this.generateEvent();
       this.setState({
-        venue: placeDetailsFromGoogle
+        venue: placeDetailsFromGoogle,
       })
       const arrOfDBVenues = this.props.listOfVenuesFromDB.map(venues => { return venues })
       const matchedVenueDetails = arrOfDBVenues.filter(eachVenue => { if (eachVenue.name === placeDetailsFromGoogle.name) { return true } });
+
       if (matchedVenueDetails[0]) {
-        console.log("Matched DB")
-        this.setState({
-          venue_id: matchedVenueDetails[0]._id,
-          submitToggle: true,
-          confirmedVenueNotification: true
-        })
+        if (matchedVenueDetails[0].places_data != "") {
+          console.log("Matched DB");
+          this.setState({
+            venue_id: matchedVenueDetails[0]._id,
+            places_data: placeDetailsFromGoogle,
+            submitToggle: true,
+            confirmedVenueNotification: true,
+            disableSearchInput: true
+          })
+        } else {
+          console.log("Need to update")
+
+          let venue_id = matchedVenueDetails[0]._id;
+          let venueDetails = {
+            places_data: placeDetailsFromGoogle,
+          };
+
+          Axios.post(`${baseURL}/api/venue/update/${venue_id}`, venueDetails, {
+            withCredentials: true,
+            useFindAndModify: false
+          })
+            .then(response => {
+              this.props.setFlashMessage("updated!", true);
+            })
+            .catch(err => {
+              this.props.setFlashMessage('Unable to update', false);
+            });
+
+        }
+
       } else {
         console.log("Not a match in DB")
         // this.matchGooglePlaceToMiamiDadeParkList(placeDetailsFromGoogle);
         this.setState({
           showVenueForm: true,
           confirmVenueToggle: true,
+          disableSearchInput: true
         })
       }
     } else {
@@ -173,11 +211,10 @@ export default class AddNewEvent extends Component {
       if (isMatch(matchedParkDetails[0])) {
         venueDetails = {
           name: placeDetailsFromGoogle.name,
-          venue_id: this.state.venue_id,
-          places_data: placeDetailsFromGoogle,
+          places_data: this.state.venue,
           parks_data: matchedParkDetails[0],
           sports_available: {
-            [this.state.sport]:"Yes"
+            [this.state.sport]: "Yes"
           }
         };
         console.log("matched with MD");
@@ -186,14 +223,16 @@ export default class AddNewEvent extends Component {
         this.setState({
           confirmedVenueNotification: true,
           submitToggle: true,
+          disableSearchInput: true
+        }, () => {
+          console.log(this.state)
         })
       } else {
         venueDetails = {
           name: placeDetailsFromGoogle.name,
-          venue_id: this.state.venue_id,
-          places_data: placeDetailsFromGoogle,
+          places_data: this.state.venue,
           sports_available: {
-            [this.state.sport]:"Yes"
+            [this.state.sport]: "Yes"
           }
         };
         console.log("No match");
@@ -202,13 +241,16 @@ export default class AddNewEvent extends Component {
         this.setState({
           confirmedVenueNotification: true,
           submitToggle: true,
+          disableSearchInput: true
+        }, () => {
+          console.log(this.state)
         })
       }
     }
   };
 
   postVenueToDB = (venueDetails) => {
-    Axios.post(`${baseURL}/api/newvenue`, venueDetails, {
+    Axios.post(`${baseURL}/api/venue/create`, venueDetails, {
       withCredentials: true
     })
       .then(response => {
@@ -218,7 +260,7 @@ export default class AddNewEvent extends Component {
         this.props.setFlashMessage('Unable to post', false);
       });
   }
-  
+
 
   render() {
 
@@ -250,29 +292,30 @@ export default class AddNewEvent extends Component {
               clearVenueInput={this.clearVenueInput}
               confirmVenueToggle={this.state.confirmVenueToggle}
               confirmedVenueNotification={this.state.confirmedVenueNotification}
+              disableSearchInput={this.state.disableSearchInput}
             />
 
             <div className={!this.state.showVenueForm ? 'hide' : undefined}>
 
-              <FormInput type="text" label="Venue Name" name="venueName" onChange={this.onChange} defaultValue={this.state.venue.name} />
+              <FormInput type="text" label="Venue Name" name="name" onChange={this.handleVenueInput} value={this.state.venue.name} />
 
-              <FormInput type="text" label="Venue Address" name="venueAddress" onChange={this.onChange} defaultValue={this.state.venue.address} />
+              <FormInput type="text" label="Venue Address" name="address" onChange={this.handleVenueInput} value={this.state.venue.address} />
 
-              <FormInput type="hidden" name="venue_ID" onChange={this.onChange} defaultValue={this.state.venue_id} />
+              <FormInput type="hidden" name="venue_id" onChange={this.handleVenueInput} value={this.state.venue_id} />
 
-              <FormInput type="hidden" name="venueID" onChange={this.onChange} defaultValue={this.state.venue.place_id} />
+              <FormInput type="hidden" name="place_id" onChange={this.handleVenueInput} value={this.state.venue.place_id} />
 
-              <FormInput type="hidden" name="venueLat" onChange={this.onChange} defaultValue={this.state.venue.lat} />
+              <FormInput type="hidden" name="lat" onChange={this.handleVenueInput} value={this.state.venue.lat} />
 
-              <FormInput type="hidden" name="venueLon" onChange={this.onChange} defaultValue={this.state.venue.lon} />
+              <FormInput type="hidden" name="lon" onChange={this.handleVenueInput} value={this.state.venue.lon} />
 
             </div>
 
-            <FormInput type="text" label="Title" name="title" onChange={this.onChange} defaultValue={this.state.title} />
+            <FormInput type="text" label="Title" name="title" onChange={this.handleInput} value={this.state.title} />
 
-            <FormInput type="textarea" label="Description" name="description" onChange={this.onChange} defaultValue={this.state.description} />
+            <FormInput type="textarea" label="Description" name="description" onChange={this.handleInput} value={this.state.description} />
 
-            <FormInput type="text" label="Sport" name="sport" onChange={this.onChange} defaultValue={this.state.sport} />
+            <FormInput type="text" label="Sport" name="sport" onChange={this.handleInput} value={this.state.sport} />
 
             <label htmlFor="date">Date</label>
             <br />

@@ -98,19 +98,25 @@ export default class GooglePlaceSearchInput extends React.Component {
                 <>
                   <FormLabel>Venue</FormLabel>
                   <InputGroup>
-                    <FormControl
+                    {!this.props.disableSearchInput ? (
+                      <FormControl
                       {...getInputProps({
                         placeholder: "Google Search ...",
                         className: "venue-search-input"
                       })}
                     />
+                    ) : (<FormControl
+                      {...getInputProps({
+                        placeholder: "Google Search ...",
+                        className: "venue-search-input"
+                      })}
+                      disabled
+                    />)}
+                    
                     {this.props.confirmedVenueNotification ? (
                       <InputGroup.Append>
-                        <Button
-                          variant="outline-success"
-                          disabled="disabled"
-                        >
-                          <FontAwesomeIcon icon={faStar} /> Success
+                        <Button variant="outline-success" disabled="disabled">
+                          <FontAwesomeIcon icon={faStar} />
                         </Button>
                       </InputGroup.Append>
                     ) : this.props.confirmVenueToggle ? (

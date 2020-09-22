@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class FormInput extends Component {
   render() {
-    //   console.log(this.props.defaultValue)
+    //   console.log(this.props.value)
     if(this.props.type==="textarea")  {
       return (<div>
         <label htmlFor={this.props.name}>{this.props.label}</label>
@@ -10,8 +10,8 @@ export default class FormInput extends Component {
           className="form-control"
           type={this.props.type}
           name={this.props.name}
-          onChange={this.props.handleInput}
-          defaultValue={this.props.defaultValue}
+          onChange={this.props.onChange}
+          value={this.props.value}
         ></textarea>
       </div>) } else if(this.props.type==="hidden")  {
     return (<div>
@@ -19,8 +19,8 @@ export default class FormInput extends Component {
         className="form-control"
         type={this.props.type}
         name={this.props.name}
-        onChange={this.props.handleInput}
-        defaultValue={this.props.defaultValue}
+        onChange={this.props.onChange}
+        value={this.props.value}
       />
     </div>) } else
     {return (
@@ -30,8 +30,8 @@ export default class FormInput extends Component {
           className="form-control"
           type={this.props.type}
           name={this.props.name}
-          onChange={this.props.handleInput}
-          defaultValue={this.props.defaultValue}
+          onChange={this.props.onChange}
+          value={this.props.value}
         />
       </div>
     )};

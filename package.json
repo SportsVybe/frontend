@@ -14,9 +14,11 @@
     "axios-oauth-client": "^1.2.1",
     "axios-token-interceptor": "^0.2.0",
     "bootstrap": "^4.3.1",
+    "connect-mongo": "^3.2.0",
     "gh-pages": "^2.2.0",
     "google-maps-react": "^2.0.2",
     "history": "^4.10.1",
+    "moment": "2.24.0",
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-datepicker": "^2.14.0",
@@ -25,8 +27,7 @@
     "react-places-autocomplete": "^7.2.1",
     "react-router-dom": "^5.1.2",
     "react-router-with-props": "^1.0.0",
-    "react-scripts": "^3.4.0",
-    "moment": "2.24.0"
+    "react-scripts": "^3.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
