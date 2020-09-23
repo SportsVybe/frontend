@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import Axios from 'axios';
-import baseURL from '../../services/base';
 
 export default class Home extends Component {
 

@@ -150,11 +150,12 @@ export default class AddNewEvent extends Component {
       this.setState({
         venue: placeDetailsFromGoogle,
       })
-      const arrOfDBVenues = this.props.listOfVenuesFromDB.map(venues => { return venues })
+      const arrOfDBVenues = this.props.listOfVenuesFromDB.map(venues => { return venues });
+      // eslint-disable-next-line
       const matchedVenueDetails = arrOfDBVenues.filter(eachVenue => { if (eachVenue.name === placeDetailsFromGoogle.name) { return true } });
 
       if (matchedVenueDetails[0]) {
-        if (matchedVenueDetails[0].places_data != "") {
+        if (matchedVenueDetails[0].places_data !== "") {
           console.log("Matched DB");
           this.setState({
             venue_id: matchedVenueDetails[0]._id,
@@ -203,6 +204,7 @@ export default class AddNewEvent extends Component {
   matchGooglePlaceToMiamiDadeParkList = (placeDetailsFromGoogle) => {
     if (placeDetailsFromGoogle) {
       const arrOfParks = this.props.listOfParks.map(park => { return park.attributes })
+      // eslint-disable-next-line
       let matchedParkDetails = arrOfParks.filter(park => { if (park.NAME === placeDetailsFromGoogle.name) { return true } });
       function isMatch(matchedPark = "") {
         return matchedPark.NAME === placeDetailsFromGoogle.name ? true : false;
